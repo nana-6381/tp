@@ -333,7 +333,9 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **Compatibility and Portability**
 * PetLog should run as expected on Windows 11+, macOS 12+, Ubuntu 22.04 LTS+, as long as it has Java 17 or above installed.
-* PetLog UI should remain usable at 100%–200% OS scaling and common resolutions (1366×768 and above).
+* PetLog GUI should work well (i.e., should not cause any resolution-related inconveniences to the user) for standard screen resolutions 1920x1080 and higher, and for screen scales 100% and 125%.
+* PetLog GUI should be usable (i.e., all functions can be used even if the user experience is not optimal) for resolutions 1280x720 and higher, and for screen scales 150%.
+* PetLog should work without requiring an installer.
 
 **Performance and Responsiveness**
 * PetLog should start and show the main window within 2.5 s on a baseline machine (8 GB RAM, SSD).
@@ -348,6 +350,8 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **Reliability and Data Integrity**
 * When exiting PetLog via the exit command, 100% of data should persist across the app restarts.
+* The data should be stored locally and should be in a human editable text file.
+* The data should not be stored in a database management system.
 * On file load, invalid/corrupted data should be detected and reported to the user without PetLog crashing.
 * PetLog should have a crash-free session rate of ≥ 99.5% in pre-release Quality Assurance runs.
 
@@ -363,7 +367,12 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 * PetLog should not use any vulgar/offensive language.
 
 **Project Process**
+* Petlog should be developed in a breadth-first incremental manner over the project duration.
 * PetLog's implementation is expected to adhere to a schedule that dynamically shifts and is agreed upon by the majority of members.
+* PetLog's codebase should only use third-party frameworks/libraries/services if they are free, open-source, and have permissive license terms, and do not require any installation by the user.
+* PetLog should be packaged in a single JAR file.
+* PetLog should abide by the following file sizes: <= 100 MB for JAR file, <= 15 MB / file for documents (e.g. PDF files).
+* PetLog's DG and UG should be PDF-friendly.
 
 ### Glossary
 
