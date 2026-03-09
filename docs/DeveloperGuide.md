@@ -262,14 +262,17 @@ _{Explain here how the data archiving feature will be implemented}_
 
 **Target user profile**:
 
-* has a need to manage a significant number of owners and pets
-* prefer desktop apps over other types
+* is an independent pet day care and/or boarding service manager
+* has a need to manage multiple pet owners and their pets daily
+* prefers desktop apps over other types
 * can type fast
 * prefers typing to mouse interactions
 * is reasonably comfortable using CLI apps
 
-**Value proposition**: manage owners and their pets faster than a typical mouse/GUI driven app
+**Value proposition**: 
 
+* manage pet owners and their pets faster than a typical mouse/GUI driven app
+* optimised for pet day care and boarding service managers who prefer CLI
 
 ### User stories
 
