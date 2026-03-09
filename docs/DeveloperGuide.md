@@ -381,6 +381,8 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **Preconditions: Pet and Owner exists**
 
+**MSS**
+
 1. User update remarks of an existing pet
 2. PetLog updates the remarks
 3. PetLog informs user remark has been updated 
@@ -394,6 +396,8 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
     Use case ends 
 
 **Use case: Delete Owner**
+
+**MSS**
 
 1. User requests to delete the owner
 2. PetLog deletes the owner 
@@ -409,6 +413,8 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **Use case: Delete Pet**
 
+**MSS**
+
 1. User requests to delete the pet
 2. PetLog deletes the pet
 3. PetLog informs user about the successful deletion
@@ -422,6 +428,8 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
       Use case ends
 
  **Use case: Find owner** 
+
+**MSS**
 
 1. User attempts owner search by keywords 
 2. PetLog finds matching owners
@@ -442,6 +450,8 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **Use case: Find pet**
 
+**MSS**
+
 1. User attempts pet search by keywords
 2. PetLog finds matching pets
 3. PetLog displays a list of matching pets
@@ -460,6 +470,8 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
       Use case ends
 
 **Use case: List**
+
+**MSS**
 
 1. User requests to list all records of owners and pets
 2. PetLog displays the list of owners and pets
