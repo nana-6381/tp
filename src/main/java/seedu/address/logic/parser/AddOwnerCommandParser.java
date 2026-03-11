@@ -39,13 +39,8 @@ public class AddOwnerCommandParser implements Parser<AddOwnerCommand> {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddOwnerCommand.MESSAGE_USAGE));
         }
 
-<<<<<<< HEAD:src/main/java/seedu/address/logic/parser/AddOwnerCommandParser.java
-        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_NAME, PREFIX_ADDRESS, PREFIX_EMAIL, PREFIX_PHONE);
-        Name name = ParserUtil.parseName(argMultimap.getValue(PREFIX_NAME).get());
-=======
-        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_OWNER_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS);
+        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_OWNER_NAME, PREFIX_ADDRESS, PREFIX_EMAIL, PREFIX_PHONE);
         Name name = ParserUtil.parseName(argMultimap.getValue(PREFIX_OWNER_NAME).get());
->>>>>>> 85b630a5 (Change Add command prefixes):src/main/java/seedu/address/logic/parser/AddCommandParser.java
         Phone phone = ParserUtil.parsePhone(argMultimap.getValue(PREFIX_PHONE).get());
         Email email = ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get());
         Address address = ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get());
