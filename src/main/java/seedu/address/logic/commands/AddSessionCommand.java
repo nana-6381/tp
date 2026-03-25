@@ -66,7 +66,25 @@ public class AddSessionCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
-        return new CommandResult(MESSAGE_SUCCESS);
+
+        if(ownerIndex.getZeroBased() >= model.getFilteredPersonList().size()) {
+            throw new CommandException("Invalid owner index");
+        }
+
+        if (petIndex.getZeroBased() >= model.getFilteredPetList().size()) {
+            throw new CommandException("Invalid pet index");
+        }
+
+        var owner = model.getFilteredPersonList().get(ownerIndex.getZeroBased());
+        var pet = model.getFilteredPetList().get(petIndex.getZeroBased());
+
+        return new CommandResult(String.format(
+                "Session added for %s's pet %s from %s to %s",
+                owner.getName(),
+                pet.getName(),
+                startTime,
+                endTime
+        ));
     }
 
     @Override
