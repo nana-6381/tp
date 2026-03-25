@@ -45,6 +45,9 @@ public class JsonAdaptedService {
         if (!Service.isValidServiceName(name)) {
             throw new IllegalValueException(Service.MESSAGE_CONSTRAINTS);
         }
+        if (!Service.isValidServicePrice(cost)) {
+            throw new IllegalValueException(Service.MESSAGE_PRICE_CONSTRAINTS);
+        }
 
         return new Service(name, cost);
     }

@@ -14,6 +14,9 @@ public class Service {
     public static final String MESSAGE_CONSTRAINTS = "Service names should only contain alphanumeric characters or "
             + "spaces";
     public static final String VALIDATION_REGEX = "\\p{Alnum}+(?: \\p{Alnum}+)*";
+    public static final String MESSAGE_PRICE_CONSTRAINTS = "Service price should be a non-negative number with up to "
+            + "2 decimal places";
+    public static final String PRICE_VALIDATION_REGEX = "\\d+(?:\\.\\d{1,2})?";
 
     public final String serviceName;
     public final double servicePrice;
@@ -27,8 +30,9 @@ public class Service {
     public Service(String serviceName, double servicePrice) {
         requireNonNull(serviceName);
         checkArgument(isValidServiceName(serviceName), MESSAGE_CONSTRAINTS);
+        checkArgument(isValidServicePrice(servicePrice), MESSAGE_PRICE_CONSTRAINTS);
         this.serviceName = serviceName;
-        this.servicePrice = Math.round(servicePrice * 100.0) / 100.0;
+        this.servicePrice = roundTo2Dp(servicePrice);
     }
 
     /**
@@ -36,6 +40,24 @@ public class Service {
      */
     public static boolean isValidServiceName(String test) {
         return test.matches(VALIDATION_REGEX);
+    }
+
+    /**
+     * Returns true if a given string is a valid service price.
+     */
+    public static boolean isValidServicePrice(String test) {
+        return test.matches(PRICE_VALIDATION_REGEX);
+    }
+
+    /**
+     * Returns true if a given number is a valid service price.
+     */
+    public static boolean isValidServicePrice(double test) {
+        return Double.isFinite(test) && test >= 0 && Math.abs(test - roundTo2Dp(test)) < 1e-9;
+    }
+
+    private static double roundTo2Dp(double value) {
+        return Math.round(value * 100.0) / 100.0;
     }
 
     public String getName() {
@@ -87,4 +109,3 @@ public class Service {
         return "[Service: " + serviceName + ", Price: " + servicePrice + ']';
     }
 }
-
