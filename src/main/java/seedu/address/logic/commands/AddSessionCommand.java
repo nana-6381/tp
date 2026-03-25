@@ -67,7 +67,7 @@ public class AddSessionCommand extends Command {
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
 
-        if(ownerIndex.getZeroBased() >= model.getFilteredPersonList().size()) {
+        if (ownerIndex.getZeroBased() >= model.getFilteredPersonList().size()) {
             throw new CommandException("Invalid owner index");
         }
 
