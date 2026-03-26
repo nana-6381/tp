@@ -78,7 +78,7 @@ public class AddSessionCommand extends Command {
 
         Pet pet = owner.getPetList().get(petIndex.getZeroBased());
         pet.addSession(new Session(startTime, endTime));
-        model.setDisplayedPet(pet);
+        model.setDisplayedPet(pet, owner.getName().fullName + "'s " + pet.getName().value + " — Sessions");
 
         return new CommandResult(String.format(MESSAGE_SUCCESS,
                 owner.getName(), pet.getName(), startTime, endTime));

@@ -84,6 +84,11 @@ public class LogicManager implements Logic {
     }
 
     @Override
+    public String getSessionPanelTitle() {
+        return model.getSessionPanelTitle();
+    }
+
+    @Override
     public Path getAddressBookFilePath() {
         return model.getAddressBookFilePath();
     }

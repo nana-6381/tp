@@ -31,6 +31,7 @@ public class ModelManager implements Model {
     private final ObservableList<Pet> allPets = FXCollections.observableArrayList();
     private final FilteredList<Pet> filteredPets;
     private final ObservableList<Session> displayedSessions = FXCollections.observableArrayList();
+    private String sessionPanelTitle = "Sessions";
 
     /**
      * Initializes a ModelManager with the given addressBook and userPrefs.
@@ -156,14 +157,21 @@ public class ModelManager implements Model {
     //=========== Session Display =============================================================
 
     @Override
-    public void setDisplayedPet(Pet pet) {
+    public void setDisplayedPet(Pet pet, String title) {
         requireNonNull(pet);
+        requireNonNull(title);
         displayedSessions.setAll(pet.getSessions());
+        sessionPanelTitle = title;
     }
 
     @Override
     public ObservableList<Session> getSessionList() {
         return FXCollections.unmodifiableObservableList(displayedSessions);
+    }
+
+    @Override
+    public String getSessionPanelTitle() {
+        return sessionPanelTitle;
     }
 
     //=========== Filtered Person List Accessors =============================================================

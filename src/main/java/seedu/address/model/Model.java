@@ -102,11 +102,17 @@ public interface Model {
     /**
      * Sets the pet whose sessions are displayed in the session panel.
      * Updates the observable session list returned by {@link #getSessionList()}.
+     *
+     * @param pet   The pet to display sessions for.
+     * @param title The header text for the session panel (e.g. "John's Snowball — Sessions").
      */
-    void setDisplayedPet(Pet pet);
+    void setDisplayedPet(Pet pet, String title);
 
     /** Returns an unmodifiable observable view of the currently displayed pet's sessions. */
     ObservableList<Session> getSessionList();
+
+    /** Returns the current session panel header title. */
+    String getSessionPanelTitle();
 
     /** Returns an unmodifiable view of the filtered person list */
     ObservableList<Person> getFilteredPersonList();

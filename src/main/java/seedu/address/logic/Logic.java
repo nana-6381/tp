@@ -41,6 +41,9 @@ public interface Logic {
     /** Returns an unmodifiable observable view of the currently displayed pet's sessions. */
     ObservableList<Session> getSessionList();
 
+    /** Returns the current session panel header title. */
+    String getSessionPanelTitle();
+
     /**
      * Returns the user prefs' address book file path.
      */
