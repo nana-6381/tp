@@ -10,6 +10,11 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 
+import seedu.address.model.pet.OwnerIndex;
+import seedu.address.model.pet.Pet;
+import seedu.address.model.pet.PetName;
+import seedu.address.model.pet.PetRemark;
+import seedu.address.model.pet.Species;
 import seedu.address.testutil.PersonBuilder;
 
 public class FieldContainsKeywordsPredicateTest {
@@ -70,12 +75,44 @@ public class FieldContainsKeywordsPredicateTest {
     }
 
     @Test
+    public void test_petCriteriaMatchInSinglePet_returnsTrue() {
+        FieldContainsKeywordsPredicate predicate = new FieldContainsKeywordsPredicate(
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), List.of(),
+                Optional.of("buddy"), Optional.of("dog"), Optional.of("friendly"));
+        assertTrue(predicate.test(new PersonBuilder().withPets(
+                new Pet(
+                        new PetName("Buddy"),
+                        new Species("Dog"),
+                        new OwnerIndex("1"),
+                        new PetRemark("Very friendly"))).build()));
+    }
+
+    @Test
+    public void test_petCriteriaSplitAcrossDifferentPets_returnsFalse() {
+        FieldContainsKeywordsPredicate predicate = new FieldContainsKeywordsPredicate(
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), List.of(),
+                Optional.of("buddy"), Optional.of("cat"), Optional.empty());
+        assertFalse(predicate.test(new PersonBuilder().withPets(
+                new Pet(
+                        new PetName("Buddy"),
+                        new Species("Dog"),
+                        new OwnerIndex("1"),
+                        new PetRemark("Active")),
+                new Pet(
+                        new PetName("Mittens"),
+                        new Species("Cat"),
+                        new OwnerIndex("1"),
+                        new PetRemark("Calm"))).build()));
+    }
+
+    @Test
     public void toStringMethod() {
         FieldContainsKeywordsPredicate predicate = new FieldContainsKeywordsPredicate(
                 Optional.of("alice"), Optional.of("9435"), Optional.empty(), Optional.empty(), List.of("friend"));
         String expected = FieldContainsKeywordsPredicate.class.getCanonicalName()
                 + "{ownerNameKeyword=Optional[alice], phoneKeyword=Optional[9435], emailKeyword=Optional.empty, "
-                + "addressKeyword=Optional.empty, tagKeywords=[friend]}";
+                + "addressKeyword=Optional.empty, tagKeywords=[friend], petNameKeyword=Optional.empty, "
+                + "speciesKeyword=Optional.empty, petRemarkKeyword=Optional.empty}";
         assertEquals(expected, predicate.toString());
     }
 }

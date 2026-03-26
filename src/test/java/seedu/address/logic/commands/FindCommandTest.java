@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.Messages.MESSAGE_PERSONS_LISTED_OVERVIEW;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
+import static seedu.address.testutil.TypicalPersons.BENSON;
 import static seedu.address.testutil.TypicalPersons.CARL;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
@@ -14,6 +15,7 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 
+import seedu.address.commons.core.index.Index;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
@@ -39,6 +41,7 @@ public class FindCommandTest {
 
         FindCommand findFirstCommand = new FindCommand(firstPredicate);
         FindCommand findSecondCommand = new FindCommand(secondPredicate);
+        FindCommand findFirstCommandWithIndex = new FindCommand(firstPredicate, Optional.of(Index.fromOneBased(1)));
 
         // same object -> returns true
         assertTrue(findFirstCommand.equals(findFirstCommand));
@@ -55,6 +58,9 @@ public class FindCommandTest {
 
         // different person -> returns false
         assertFalse(findFirstCommand.equals(findSecondCommand));
+
+        // different owner index filter -> returns false
+        assertFalse(findFirstCommand.equals(findFirstCommandWithIndex));
     }
 
     @Test
@@ -80,11 +86,35 @@ public class FindCommandTest {
     }
 
     @Test
+    public void execute_ownerAndPetFilters_onePersonFound() {
+        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 1);
+        FieldContainsKeywordsPredicate predicate = new FieldContainsKeywordsPredicate(
+                Optional.of("Carl"), Optional.empty(), Optional.empty(), Optional.empty(), List.of(),
+                Optional.of("Goldy"), Optional.of("Fish"), Optional.of("Calm"));
+        FindCommand command = new FindCommand(predicate);
+        expectedModel.updateFilteredPersonList(predicate);
+        assertCommandSuccess(command, model, expectedMessage, expectedModel);
+        assertEquals(List.of(CARL), model.getFilteredPersonList());
+    }
+
+    @Test
+    public void execute_ownerIndexFilter_onePersonFound() {
+        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 1);
+        FieldContainsKeywordsPredicate predicate = new FieldContainsKeywordsPredicate(
+                Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), List.of());
+        FindCommand command = new FindCommand(predicate, Optional.of(Index.fromOneBased(2)));
+        expectedModel.updateFilteredPersonList(person -> person.equals(BENSON));
+        assertCommandSuccess(command, model, expectedMessage, expectedModel);
+        assertEquals(List.of(BENSON), model.getFilteredPersonList());
+    }
+
+    @Test
     public void toStringMethod() {
         FieldContainsKeywordsPredicate predicate = new FieldContainsKeywordsPredicate(
                 Optional.of("keyword"), Optional.empty(), Optional.empty(), Optional.empty(), List.of());
         FindCommand findCommand = new FindCommand(predicate);
-        String expected = FindCommand.class.getCanonicalName() + "{predicate=" + predicate + "}";
+        String expected = FindCommand.class.getCanonicalName()
+                + "{predicate=" + predicate + ", ownerIndex=Optional.empty}";
         assertEquals(expected, findCommand.toString());
     }
 }
