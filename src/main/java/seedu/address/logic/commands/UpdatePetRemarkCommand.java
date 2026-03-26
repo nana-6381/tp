@@ -73,14 +73,14 @@ public class UpdatePetRemarkCommand extends Command {
         }
 
         // instanceof handles nulls
-        if (!(other instanceof AddOwnerCommand)) {
+        if (!(other instanceof UpdatePetRemarkCommand)) {
             return false;
         }
 
         UpdatePetRemarkCommand otherAddOwnerCommand = (UpdatePetRemarkCommand) other;
-        return (this.ownerIndex == otherAddOwnerCommand.ownerIndex)
-                && this.petIndex == otherAddOwnerCommand.petIndex
-                && newRemark.equals(otherAddOwnerCommand.newRemark);
+        return (this.ownerIndex.equals(otherAddOwnerCommand.ownerIndex)
+                && this.petIndex.equals(otherAddOwnerCommand.petIndex)
+                && newRemark.equals(otherAddOwnerCommand.newRemark));
     }
 
     @Override
@@ -88,5 +88,9 @@ public class UpdatePetRemarkCommand extends Command {
         return new ToStringBuilder(this)
                 .add("New Remark", newRemark)
                 .toString();
+    }
+
+    public String getNewRemark() {
+        return this.newRemark;
     }
 }
