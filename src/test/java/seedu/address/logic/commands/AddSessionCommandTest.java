@@ -169,7 +169,8 @@ public class AddSessionCommandTest {
                 + "{ownerIndex=" + INDEX_FIRST_PERSON
                 + ", petIndex=" + INDEX_FIRST_PERSON
                 + ", startTime=" + VALID_START
-                + ", endTime=" + VALID_END + "}";
+                + ", endTime=" + VALID_END
+                + ", serviceNames=[]}";
         assertEquals(expected, command.toString());
     }
 }

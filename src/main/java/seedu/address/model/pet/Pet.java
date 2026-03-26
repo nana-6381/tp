@@ -65,7 +65,7 @@ public class Pet {
     }
 
     /**
-     * Returns true if both pets have the same name, species, and owner index.
+     * Returns true if both pets have the same name and species.
      * This defines a weaker notion of equality between two pets.
      */
     public boolean isSamePet(Pet otherPet) {
@@ -110,7 +110,7 @@ public class Pet {
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, species, ownerIndex);
+        return Objects.hash(name, species, remark);
     }
 
     @Override
