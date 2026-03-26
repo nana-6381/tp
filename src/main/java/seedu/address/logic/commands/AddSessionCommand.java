@@ -11,9 +11,13 @@ import java.util.List;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.ToStringBuilder;
+import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
+import seedu.address.model.person.Person;
+import seedu.address.model.pet.Pet;
 import seedu.address.model.service.Service;
+import seedu.address.model.session.Session;
 
 /**
  * Adds a session for a specific owner and pet with a start and end time.
@@ -37,9 +41,9 @@ public class AddSessionCommand extends Command {
             + PREFIX_SERVICE_NAME + "Shampoo "
             + PREFIX_SERVICE_NAME + "Fur trim";
 
-    public static final String MESSAGE_INVALID_OWNER_INDEX = "Invalid owner index";
-    public static final String MESSAGE_INVALID_PET_INDEX = "Invalid pet index";
+    public static final String MESSAGE_SUCCESS = "Session added for %s's pet %s from %s to %s";
     public static final String MESSAGE_UNKNOWN_SERVICE = "Unknown service: %1$s";
+    public static final String SESSION_PANEL_TITLE_FORMAT = "%s's %s — Sessions";
 
     private final Index ownerIndex;
     private final Index petIndex;
@@ -48,12 +52,20 @@ public class AddSessionCommand extends Command {
     private final List<String> serviceNames;
 
     /**
+     * Creates an AddSessionCommand with no services.
+     */
+    public AddSessionCommand(Index ownerIndex, Index petIndex, String startTime, String endTime) {
+        this(ownerIndex, petIndex, startTime, endTime, List.of());
+    }
+
+    /**
      * Creates an AddSessionCommand.
      *
-     * @param ownerIndex Index of the owner in the list
-     * @param petIndex Index of the pet in the list
-     * @param startTime Start time of the session
-     * @param endTime End time of the session
+     * @param ownerIndex   Index of the owner in the displayed list
+     * @param petIndex     Index of the pet within that owner's pet list
+     * @param startTime    Start time of the session
+     * @param endTime      End time of the session
+     * @param serviceNames Names of services to attach to this session
      */
     public AddSessionCommand(Index ownerIndex, Index petIndex,
                              String startTime, String endTime, List<String> serviceNames) {
@@ -69,50 +81,57 @@ public class AddSessionCommand extends Command {
         this.serviceNames = List.copyOf(serviceNames);
     }
 
-    /**
-     * Executes the command to add a session.
-     *
-     * @param model Model used to access and modify data
-     * @return Result of the command execution
-     * @throws CommandException If execution fails
-     */
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
 
-        if (ownerIndex.getZeroBased() >= model.getFilteredPersonList().size()) {
-            throw new CommandException("Invalid owner index");
+        List<Person> lastShownList = model.getFilteredPersonList();
+        if (ownerIndex.getZeroBased() >= lastShownList.size()) {
+            throw new CommandException(Messages.MESSAGE_INVALID_OWNER_DISPLAYED_INDEX);
         }
 
-        if (petIndex.getZeroBased() >= model.getFilteredPetList().size()) {
-            throw new CommandException("Invalid pet index");
+        Person owner = lastShownList.get(ownerIndex.getZeroBased());
+
+        if (petIndex.getZeroBased() >= owner.getPetCount()) {
+            throw new CommandException(Messages.MESSAGE_INVALID_PET_DISPLAYED_INDEX);
         }
 
-        var owner = model.getFilteredPersonList().get(ownerIndex.getZeroBased());
-        var pet = model.getFilteredPetList().get(petIndex.getZeroBased());
+        Pet pet = owner.getPetList().get(petIndex.getZeroBased());
 
         double totalFee = calculateTotalFee(model.getServiceList());
 
-        return new CommandResult(String.format(
-                "Session added for %s's pet %s from %s to %s. Total fee: $%.2f",
-                owner.getName(),
-                pet.getName(),
-                startTime,
-                endTime,
-                totalFee
-        ));
+        pet.addSession(new Session(startTime, endTime, totalFee));
+        model.setDisplayedPet(pet,
+                String.format(SESSION_PANEL_TITLE_FORMAT, owner.getName().fullName, pet.getName().value));
+
+        String baseMessage = String.format(MESSAGE_SUCCESS, owner.getName(), pet.getName(), startTime, endTime);
+        return new CommandResult(baseMessage + String.format(". Total fee: $%.2f", totalFee));
+    }
+
+    /**
+     * Validates that all requested service names exist in the model.
+     *
+     * @throws CommandException if any service name is not found
+     */
+    private void validateServices(List<Service> availServices) throws CommandException {
+        for (String serviceName : serviceNames) {
+            boolean found = availServices.stream()
+                    .anyMatch(s -> s.getName().equalsIgnoreCase(serviceName));
+            if (!found) {
+                throw new CommandException(String.format(MESSAGE_UNKNOWN_SERVICE, serviceName));
+            }
+        }
     }
 
     /**
      * Calculates the total fee for all services in this session.
      *
-     * @param availServices Services currently stored in the model   the reference object with which to compare.
+     * @param availServices Services currently stored in the model
      * @return Total fee for the selected services
      * @throws CommandException If any requested service does not exist
      */
     private double calculateTotalFee(List<Service> availServices) throws CommandException {
         double totalFee = 0;
-
         for (String serviceName : serviceNames) {
             Service matchedService = findServiceByName(availServices, serviceName);
             if (matchedService == null) {

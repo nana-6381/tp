@@ -8,6 +8,7 @@ import seedu.address.commons.core.GuiSettings;
 import seedu.address.model.person.Person;
 import seedu.address.model.pet.Pet;
 import seedu.address.model.service.Service;
+import seedu.address.model.session.Session;
 
 /**
  * The API of the Model component.
@@ -97,6 +98,21 @@ public interface Model {
 
     /** Returns an unmodifiable view of the services list */
     ObservableList<Service> getServiceList();
+
+    /**
+     * Sets the pet whose sessions are displayed in the session panel.
+     * Updates the observable session list returned by {@link #getSessionList()}.
+     *
+     * @param pet   The pet to display sessions for.
+     * @param title The header text for the session panel (e.g. "John's Snowball — Sessions").
+     */
+    void setDisplayedPet(Pet pet, String title);
+
+    /** Returns an unmodifiable observable view of the currently displayed pet's sessions. */
+    ObservableList<Session> getSessionList();
+
+    /** Returns the current session panel header title. */
+    String getSessionPanelTitle();
 
     /** Returns an unmodifiable view of the filtered person list */
     ObservableList<Person> getFilteredPersonList();

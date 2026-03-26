@@ -17,6 +17,7 @@ import seedu.address.commons.core.LogsCenter;
 import seedu.address.model.person.Person;
 import seedu.address.model.pet.Pet;
 import seedu.address.model.service.Service;
+import seedu.address.model.session.Session;
 
 /**
  * Represents the in-memory model of the address book data.
@@ -29,6 +30,10 @@ public class ModelManager implements Model {
     private final FilteredList<Person> filteredPersons;
     private final ObservableList<Pet> allPets = FXCollections.observableArrayList();
     private final FilteredList<Pet> filteredPets;
+    private final ObservableList<Session> displayedSessions = FXCollections.observableArrayList();
+    private final ObservableList<Session> unmodifiableDisplayedSessions =
+            FXCollections.unmodifiableObservableList(displayedSessions);
+    private String sessionPanelTitle = "Sessions";
 
     /**
      * Initializes a ModelManager with the given addressBook and userPrefs.
@@ -149,6 +154,26 @@ public class ModelManager implements Model {
     @Override
     public ObservableList<Service> getServiceList() {
         return addressBook.getServiceList();
+    }
+
+    //=========== Session Display =============================================================
+
+    @Override
+    public void setDisplayedPet(Pet pet, String title) {
+        requireNonNull(pet);
+        requireNonNull(title);
+        displayedSessions.setAll(pet.getSessions());
+        sessionPanelTitle = title;
+    }
+
+    @Override
+    public ObservableList<Session> getSessionList() {
+        return unmodifiableDisplayedSessions;
+    }
+
+    @Override
+    public String getSessionPanelTitle() {
+        return sessionPanelTitle;
     }
 
     //=========== Filtered Person List Accessors =============================================================

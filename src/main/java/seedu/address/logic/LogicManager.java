@@ -17,6 +17,8 @@ import seedu.address.model.Model;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.person.Person;
 import seedu.address.model.pet.Pet;
+import seedu.address.model.service.Service;
+import seedu.address.model.session.Session;
 import seedu.address.storage.Storage;
 
 /**
@@ -75,6 +77,21 @@ public class LogicManager implements Logic {
     @Override
     public ObservableList<Pet> getFilteredPetList() {
         return model.getFilteredPetList();
+    }
+
+    @Override
+    public ObservableList<Service> getServiceList() {
+        return model.getServiceList();
+    }
+
+    @Override
+    public ObservableList<Session> getSessionList() {
+        return model.getSessionList();
+    }
+
+    @Override
+    public String getSessionPanelTitle() {
+        return model.getSessionPanelTitle();
     }
 
     @Override
