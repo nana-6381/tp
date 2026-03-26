@@ -7,7 +7,6 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_PET_INDEX;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_SERVICE_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_START_TIME;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import seedu.address.commons.core.index.Index;
@@ -56,7 +55,8 @@ public class AddSessionCommand extends Command {
      * @param startTime Start time of the session
      * @param endTime End time of the session
      */
-    public AddSessionCommand(Index ownerIndex, Index petIndex, String startTime, String endTime, List<String> serviceNames) {
+    public AddSessionCommand(Index ownerIndex, Index petIndex,
+                             String startTime, String endTime, List<String> serviceNames) {
         requireNonNull(ownerIndex);
         requireNonNull(petIndex);
         requireNonNull(startTime);
