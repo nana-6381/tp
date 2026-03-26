@@ -13,6 +13,8 @@ import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
+import seedu.address.logic.Messages;
+
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBook;
@@ -126,7 +128,7 @@ public class AddPetCommandTest {
 
         AddPetCommand command = new AddPetCommand(INDEX_FIRST_PERSON, petToAdd);
 
-        assertCommandFailure(command, model, "Owner list is empty. Cannot add pet.");
+        assertCommandFailure(command, model, Messages.MESSAGE_INVALID_OWNER_DISPLAYED_INDEX);
     }
 
     @Test

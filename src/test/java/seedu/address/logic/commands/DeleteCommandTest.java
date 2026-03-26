@@ -180,7 +180,7 @@ public class DeleteCommandTest {
         Index outOfBoundOwnerIndex = Index.fromOneBased(modelWithPets.getFilteredPersonList().size() + 1);
         DeleteCommand deleteCommand = new DeleteCommand(outOfBoundOwnerIndex, INDEX_FIRST_PERSON);
 
-        assertCommandFailure(deleteCommand, modelWithPets, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+        assertCommandFailure(deleteCommand, modelWithPets, Messages.MESSAGE_INVALID_OWNER_DISPLAYED_INDEX);
     }
 
     @Test
