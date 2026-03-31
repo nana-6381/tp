@@ -4,6 +4,8 @@ skinparam arrowThickness 1.1
 skinparam arrowColor UI_COLOR_T4
 skinparam classBackgroundColor UI_COLOR
 
+left to right direction
+
 package UI <<Rectangle>>{
 Class "<<interface>>\nUi" as Ui
 Class "{abstract}\nUiPart" as UiPart
@@ -18,8 +20,6 @@ Class CommandBox
 Class SessionListPanel
 Class SessionCard
 Class ServiceListPanel
-Class PetCard
-Class PetListPanel
 }
 
 package Model <<Rectangle>> {
@@ -33,21 +33,20 @@ Class HiddenLogic #FFFFFF
 Class HiddenOutside #FFFFFF
 HiddenOutside ..> Ui
 
-UiManager .left.|> Ui
-UiManager -down-> "1" MainWindow
-MainWindow *-down->  "1" CommandBox
-MainWindow *-down-> "1" ResultDisplay
-MainWindow *-down-> "1" OwnerListPanel
-MainWindow *-down-> "1" StatusBarFooter
-MainWindow *-down-> "1" SessionListPanel
-MainWindow *-down-> "1" ServiceListPanel
+UiManager .|> Ui
+UiManager --> "1" MainWindow
+MainWindow *--> "1" CommandBox
+MainWindow *--> "1" ResultDisplay
+MainWindow *--> "1" OwnerListPanel
+MainWindow *--> "1" StatusBarFooter
+MainWindow *--> "1" SessionListPanel
+MainWindow *--> "1" ServiceListPanel
 MainWindow --> "0..1" HelpWindow
 
-OwnerListPanel -down-> "*" OwnerCard
-SessionListPanel -down-> "*" SessionCard
-PetListPanel -down-> "*" PetCard
+OwnerListPanel --> "*" OwnerCard
+SessionListPanel --> "*" SessionCard
 
-MainWindow -left-|> UiPart
+note right of OwnerCard : renders pets inline
 
 ResultDisplay --|> UiPart
 CommandBox --|> UiPart
@@ -58,17 +57,9 @@ HelpWindow --|> UiPart
 SessionListPanel --|> UiPart
 SessionCard --|> UiPart
 ServiceListPanel --|> UiPart
-PetListPanel --|> UiPart
-PetCard --|> UiPart
+MainWindow --|> UiPart
 
 OwnerCard ..> Model
-UiManager -right-> Logic
-MainWindow -left-> Logic
-
-OwnerListPanel -[hidden]left- HelpWindow
-HelpWindow -[hidden]left- CommandBox
-CommandBox -[hidden]left- ResultDisplay
-ResultDisplay -[hidden]left- StatusBarFooter
-
-MainWindow -[hidden]-|> UiPart
+UiManager --> Logic
+MainWindow --> Logic
 @enduml
