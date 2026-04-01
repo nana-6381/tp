@@ -111,8 +111,6 @@ public class AddOwnerCommandParserTest {
         assertParseFailure(parser, INVALID_ADDRESS_DESC + validExpectedPersonString,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_ADDRESS));
 
-        // valid value followed by invalid value
-
         // invalid name
         assertParseFailure(parser, validExpectedPersonString + INVALID_NAME_DESC,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_OWNER_NAME));
