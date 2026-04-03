@@ -73,19 +73,19 @@ Shows a message explaining how to access the help page.
 Format: `help`
 
 
-### Adding a person: `add`
+### Adding an owner: `addowner`
 
-Adds a person to the address book.
+Adds an owner to PetLog.
 
-Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​`
+Format: `addowner on/NAME ph/PHONE_NUMBER em/EMAIL ad/ADDRESS [ot/TAG]…​`
 
 <div markdown="span" class="alert alert-primary">:bulb: **Tip:**
 A person can have any number of tags (including 0)
 </div>
 
 Examples:
-* `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01`
-* `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 t/criminal`
+* `addowner on/John Doe ph/98765432 em/johnd@example.com ad/John street, block 123, #01-01`
+* `addowner on/Betsy Crowe ot/friend em/betsycrowe@example.com ad/Newgate Prison ph/1234567 ot/criminal`
 
 ### Adding a pet under an owner: `addpet`
 
@@ -94,7 +94,6 @@ Format: `addpet oi/OWNER_INDEX pn/PET_NAME ps/SPECIES [pr/REMARKS]`
 * Adds the pet with specified `NAME` and `SPECIES` (and optional remark) under the owner specified by `OWNER_INDEX`
 
 Examples:
-
 * `addpet oi/2 pn/Molly ps/Golden Retriever pr/cuddly` Adds a cuddly golden retriever called Molly under the second
     owner in the list of owners; Molly will have a remark that she is cuddly.
 * `addpet oi/1 pn/Dave ps/Great Dane` Adds a great dane called Dave under the first owner on the list of owners.
@@ -106,12 +105,11 @@ Format: `update oi/OWNER_INDEX pi/PET_INDEX pr/REMARKS`
 * Sets the remark of the pet specified by `PET_INDEX` under the owner specified by `OWNER_INDEX`.
 
 Examples:
-
 * `update oi/1 pi/3 pr/aggressive` Updates the remark of the third pet listed under the first owner to be "aggressive". 
 
 ### Listing all persons : `list`
 
-Shows a list of all persons in the address book.
+Shows a list of all owners and pets in PetLog.
 
 Format: `list`
 
@@ -128,26 +126,24 @@ Format: `editowner oi/OWNER_INDEX [on/NAME] [ph/PHONE] [em/EMAIL] [ad/ADDRESS] [
 * You can remove all the person’s tags by typing `ot/` without specifying any tags after it.
 
 Examples:
-*  `edit oi/1 ph/91234567 em/johndoe@example.com` Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
-*  `edit oi/2 on/Betsy Crower ot/` Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
+*  `editowner oi/1 ph/91234567 em/johndoe@example.com` Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
+*  `editowner oi/2 on/Betsy Crower ot/` Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
 
 ### Locating persons by name: `find`
 
-Finds persons whose names contain any of the given keywords.
+Finds owners or pets whose details match all the given keywords.
 
-Format: `find KEYWORD [MORE_KEYWORDS]`
+Format: `find [on/OWNER_NAME] [ph/PHONE] [em/EMAIL] [ad/ADDRESS] [ot/OWNER_TAG]…​ [oi/OWNER_INDEX] [pn/PET_NAME] [ps/SPECIES] [pr/REMARKS]`
 
-* The search is case-insensitive. e.g `hans` will match `Hans`
-* The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`
-* Only the name is searched.
-* Only full words will be matched e.g. `Han` will not match `Hans`
-* Persons matching at least one keyword will be returned (i.e. `OR` search).
-  e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
+* At least one of the optional fields must be provided.
+* The search is case-insensitive. e.g `hans` will match `Hans`.
+* Partial matches are displayed e.g. `Han` will match `Hans`.
+* Owners/Pets matching all keywords will be returned (i.e. `AND` search).
 
 Examples:
-* `find John` returns `john` and `John Doe`
-* `find alex david` returns `Alex Yeoh`, `David Li`<br>
-  ![result for 'find alex david'](images/findAlexDavidResult.png)
+* `find on/Hans ps/Dog` returns pets that are `Dogs` whose owner's name contains `Hans`.
+* `find ad/Serangoon` returns owners whose address contains `Serangoon`.
+  ![[result for 'find ad/Toa Payoh']](images/findAdToaPayohResult.png)
 
 ### Deleting a person : `delete`
 
@@ -162,6 +158,29 @@ Format: `delete INDEX`
 Examples:
 * `list` followed by `delete 2` deletes the 2nd person in the address book.
 * `find Betsy` followed by `delete 1` deletes the 1st person in the results of the `find` command.
+
+### Adding a service : `addservice`
+
+Adds a service to the list of services.
+
+Format: `addservice sn/SERVICE_NAME sp/SERVICE_PRICE`
+
+* The service name must not match that of an existing service in the list (case-insensitive).
+* The price must be a non-negative number with up to 2 decimal places.
+
+Examples:
+* `addservice sn/Ear Cleaning sp/12.50` adds Ear Cleaning as a service to the list with the price of 12.50.
+
+### Deleting a service : `deleteservice`
+
+Deletes a service from the list of services.
+
+Format: `deleteservice sn/SERVICE_NAME`
+
+* The service name must match that of an existing service in the list (case-insensitive).
+
+Examples:
+* `deleteservice sn/Ear Cleaning` deletes Ear Cleaning as a service from the list (if it exists).
 
 ### Clearing all entries : `clear`
 
@@ -212,10 +231,13 @@ _Details coming soon ..._
 
 Action | Format, Examples
 --------|------------------
-**Add** | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague`
+**Add Owner** | `addowner on/NAME ph/PHONE_NUMBER em/EMAIL ad/ADDRESS [ot/TAG]…​` <br> e.g., `addowner on/John Doe ph/98765432 em/johnd@example.com ad/John street, block 123, #01-01`
+**Add Pet** | `addpet oi/OWNER_INDEX pn/PET_NAME ps/SPECIES [pr/REMARKS]` <br> e.g., `addpet oi/2 pn/Molly ps/Golden Retriever pr/cuddly`
+**Add Service** | `addservice sn/SERVICE_NAME sp/SERVICE_PRICE` <br> e.g., `addservice sn/Ear Cleaning sp/12.50`
 **Clear** | `clear`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
-**Edit** | `editowner oi/OWNER_INDEX [on/NAME] [ph/PHONE] [em/EMAIL] [ad/ADDRESS] [t/TAG]…​`<br> e.g.,`edit oi/1 ph/91234567 em/johndoe@example.com`
-**Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
+**Delete Service** | `deleteservice sn/SERVICE_NAME` <br> e.g., `deleteservice sn/Ear Cleaning`
+**Edit Owner** | `editowner oi/OWNER_INDEX [on/NAME] [ph/PHONE] [em/EMAIL] [ad/ADDRESS] [t/TAG]…​`<br> e.g., `editowner oi/1 ph/91234567 em/johndoe@example.com`
+**Find** | `find [on/OWNER_NAME] [ph/PHONE] [em/EMAIL] [ad/ADDRESS] [ot/OWNER_TAG]…​ [oi/OWNER_INDEX] [pn/PET_NAME] [ps/SPECIES] [pr/REMARKS]`<br> e.g., `find on/Hans ps/Dog`
 **List** | `list`
 **Help** | `help`
