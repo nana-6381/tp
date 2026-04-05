@@ -51,14 +51,14 @@ The bulk of the app's work is done by the following four components:
 
 **How the architecture components interact with each other**
 
-The *Sequence Diagram* below shows how the components interact with each other for the scenario where the user issues the command `delete 1`.
+The *Sequence Diagram* below shows how the components interact with each other for the scenario where the user issues the command `delete oi/1`.
 
 <img src="images/ArchitectureSequenceDiagram.png" width="574" />
 
 Each of the four main components (also shown in the diagram above),
 
 * defines its *API* in an `interface` with the same name as the Component.
-* implements its functionality using a concrete `{Component Name}Manager` class (which follows the corresponding API `interface` mentioned in the previous point.
+* implements its functionality using a concrete `{Component Name}Manager` class, which follows the corresponding API `interface` mentioned in the previous point.
 
 For example, the `Logic` component defines its API in the `Logic.java` interface and implements its functionality using the `LogicManager.java` class which follows the `Logic` interface. Other components interact with a given component through its interface rather than the concrete class (reason: to prevent outside component's being coupled to the implementation of a component), as illustrated in the (partial) class diagram below.
 
@@ -122,12 +122,14 @@ How the parsing works:
 
 The `Model` component,
 
-* stores the address book data i.e., all `Person` objects (which are contained in a `UniquePersonList` object).
-* stores the currently 'selected' `Person` objects (e.g., results of a search query) as a separate _filtered_ list which is exposed to outsiders as an unmodifiable `ObservableList<Person>` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
-* stores a `UserPref` object that represents the user’s preferences. This is exposed to the outside as a `ReadOnlyUserPref` objects.
-* does not depend on any of the other three components (as the `Model` represents data entities of the domain, they should make sense on their own without depending on other components)
+* stores the PetLog data in an `AddressBook`, which contains all `Person` objects in a `UniquePersonList` and all `Service` objects in a `UniqueServiceList`.
+* stores each owner's pets inside the corresponding `Person` object. Each `Pet` is made up of its own value objects such as `PetName`, `Species`, and `PetRemark`.
+* stores the currently selected owners as a separate filtered list, exposed as an unmodifiable `ObservableList<Person>`. This allows the UI to observe owner list changes and update automatically.
+* derives and stores a separate filtered pet list, exposed as an unmodifiable `ObservableList<Pet>`, so the UI can display pets independently of the owner cards.
+* stores a `UserPrefs` object that represents the user’s preferences. This is exposed to the outside as a `ReadOnlyUserPrefs` object.
+* does not depend on the `UI`, `Logic`, or `Storage` components, since the `Model` represents the domain entities and their relationships.
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** An alternative (arguably, a more OOP) model is given below. It has a `Tag` list in the `AddressBook`, which `Person` references. This allows `AddressBook` to only require one `Tag` object per unique tag, instead of each `Person` needing their own `Tag` objects.<br>
+<div markdown="span" class="alert alert-info">:information_source: **Note:** An alternative (arguably, a more OOP) model is given below. It illustrates how `AddressBook` could store a shared `Tag` list that `Person` objects reference, instead of each `Person` storing its own `Tag` objects. This would reduce duplicate `Tag` instances across owners. For simplicity, the alternative diagram focuses only on the tag-related part of the model and omits the newer `Pet` and `Service` structures.<br>
 
 <img src="images/BetterModelClassDiagram.png" width="450" />
 
@@ -573,6 +575,93 @@ testers are expected to do more *exploratory* testing.
 
 1. _{ more test cases …​ }_
 
+### Adding an owner
+
+1. Adding an owner
+
+   1. Prerequisites: App is launched with sample data (contains owner `Alex Yeoh`).
+
+   1. Test case: `addowner on/Jane Tan ph/81234567 em/jane.tan@gmail.com ad/12 Tampines Street 11, #03-55 ot/vip`<br>
+      Expected: A new owner is added and shown in the owner list. Success message starts with `New owner added:`.
+
+   1. Test case: `addowner on/Alex Yeoh ph/99998888 em/alex.new@example.com ad/1 New Address`<br>
+      Expected: Command fails with `This owner already exists in PetLog`.
+
+   1. Test case: `addowner on/Jane Tan ph/81234567 em/jane.tan@gmail.com`<br>
+      Expected: Command fails due to invalid format (missing required `ad/` prefix).
+
+### Editing an owner
+
+1. Editing the fields of an existing owner
+
+   1. Prerequisites: Use sample data (contains owner `Alex Yeoh` at index 1).
+
+   1. Test case: `edit oi/1 em/yeohalex@example.com` <br>
+      Expected: `Alex Yeoh`'s email updates to `yeohalex@example.com`.
+
+   1. Test case: `edit oi/1 oi/` <br>
+      Expected: `Alex Yeoh`'s existing `friends` tag is removed.
+
+### Finding an owner
+
+1. Finding owners using owner fields
+
+   1. Prerequisites: Use sample data (contains owner `Alex Yeoh`).
+
+   1. Test case: `find on/alex`<br>
+      Expected: Owner list shows matching owners whose names contain `alex` (case-insensitive), including `Alex Yeoh`.
+
+   1. Test case: `find ad/ang mo kio`<br>
+      Expected: Owner list shows only owners whose address contains `ang mo kio`.
+
+   1. Test case: `find on/nonexistentowner`<br>
+      Expected: Owner list shows 0 results and status message indicates `0 persons listed!`.
+
+### Finding a specific pet
+
+1. Finding owners that have a pet matching given pet fields
+
+   1. Prerequisites: Use sample data (contains pet `Buddy`, species `Dog`, under `Alex Yeoh`).
+
+   1. Test case: `find pn/buddy`<br>
+      Expected: Owner list shows owners with at least one pet whose name contains `buddy`.
+
+   1. Test case: `find pn/buddy ps/dog`<br>
+      Expected: Owner list shows owners with at least one pet matching both pet name and species criteria.
+
+   1. Test case: `find on/alex pn/buddy`<br>
+      Expected: Owner list shows owners matching both owner and pet criteria.
+
+### Adding a service
+
+1. Adding a service to the service list
+
+   1. Prerequisites: Service `Ear cleaning` does not already exist.
+
+   1. Test case: `addservice sn/Ear cleaning sp/12.50`<br>
+      Expected: Service is added to the service panel. Success message starts with `New service added:`.
+
+   1. Test case: `addservice sn/Ear cleaning sp/15.00`<br>
+      Expected: Command fails with `This service already exists in PetLog`.
+
+   1. Test case: `addservice sn/Ear cleaning sp/-1`<br>
+      Expected: Command fails with service price constraint error.
+
+### Deleting a service
+
+1. Deleting a service by service name
+
+   1. Prerequisites: Service `Ear cleaning` exists (add it first if needed).
+
+   1. Test case: `deleteservice sn/Ear cleaning`<br>
+      Expected: Service is removed from the service panel. Success message starts with `Deleted Service:`.
+
+   1. Test case: `deleteservice sn/Nonexistent Service`<br>
+      Expected: Command fails with `The service name provided is invalid`.
+
+   1. Test case: `deleteservice`<br>
+      Expected: Command fails due to invalid format (missing required `sn/` prefix).
+
 ### Deleting a person
 
 1. Deleting a person while all persons are being shown
@@ -597,3 +686,15 @@ testers are expected to do more *exploratory* testing.
    1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
 
 1. _{ more test cases …​ }_
+
+--------------------------------------------------------------------------------------------------------------------
+
+## **Appendix: Effort**
+
+This section aims to elaborate on the difficulty level, challenges faced, effort required, and achievements of this project.
+
+--------------------------------------------------------------------------------------------------------------------
+
+## **Appendix: Planned Enhancements**
+
+This section lists bugs we are aware of, and fixes that we propose to add in the near future.
