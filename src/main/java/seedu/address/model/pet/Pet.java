@@ -65,6 +65,20 @@ public class Pet {
     }
 
     /**
+     * Removes the session at the specified index from the list of sessions.
+     *
+     * @param index the position of the session to be removed
+     * @throws IndexOutOfBoundsException if the index is negative or greater than
+     *         or equal to the number of sessions
+     */
+    public void removeSession(int index) {
+        if (index < 0 || index >= sessions.size()) {
+            throw new IndexOutOfBoundsException("Invalid session index");
+        }
+        sessions.remove(index);
+    }
+
+    /**
      * Returns true if both pets have the same name and species.
      * This defines a weaker notion of equality between two pets.
      */
