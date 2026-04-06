@@ -24,6 +24,7 @@ import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.person.Person;
 import seedu.address.model.pet.Pet;
+import seedu.address.model.service.Service;
 import seedu.address.model.session.Session;
 import seedu.address.testutil.PetBuilder;
 import seedu.address.testutil.TypicalAddressBooks;
@@ -34,6 +35,8 @@ import seedu.address.testutil.TypicalAddressBooks;
  */
 public class DeleteCommandTest {
 
+    private static final String EXISTING_SERVICE_NAME = "Base service charge";
+    private static final String NON_EXISTENT_SERVICE_NAME = "Non existent service";
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
 
     @Test
@@ -226,12 +229,38 @@ public class DeleteCommandTest {
     }
 
     @Test
+    public void execute_validServiceName_success() {
+        Model modelWithServices = new ModelManager(TypicalAddressBooks.getTypicalPetLog(), new UserPrefs());
+        Service serviceToDelete = modelWithServices.getServiceList().stream()
+                .filter(service -> service.getName().equals(EXISTING_SERVICE_NAME))
+                .findFirst()
+                .get();
+
+        DeleteCommand deleteCommand = new DeleteCommand(EXISTING_SERVICE_NAME);
+        String expectedMessage = String.format(DeleteCommand.MESSAGE_DELETE_SERVICE_SUCCESS, serviceToDelete);
+
+        Model expectedModel = new ModelManager(modelWithServices.getAddressBook(), new UserPrefs());
+        expectedModel.deleteService(serviceToDelete);
+
+        assertCommandSuccess(deleteCommand, modelWithServices, expectedMessage, expectedModel);
+    }
+
+    @Test
+    public void execute_invalidServiceName_throwsCommandException() {
+        Model modelWithServices = new ModelManager(TypicalAddressBooks.getTypicalPetLog(), new UserPrefs());
+        DeleteCommand deleteCommand = new DeleteCommand(NON_EXISTENT_SERVICE_NAME);
+
+        assertCommandFailure(deleteCommand, modelWithServices, DeleteCommand.MESSAGE_INVALID_SERVICE_NAME);
+    }
+
+    @Test
     public void equals() {
         DeleteCommand deleteFirstCommand = new DeleteCommand(INDEX_FIRST_PERSON);
         DeleteCommand deleteSecondCommand = new DeleteCommand(INDEX_SECOND_PERSON);
         DeleteCommand deleteFirstPetCommand = new DeleteCommand(INDEX_FIRST_PERSON, INDEX_FIRST_PERSON);
         DeleteCommand deleteFirstSessionCommand = new DeleteCommand(INDEX_FIRST_PERSON, INDEX_FIRST_PERSON,
                 INDEX_FIRST_PERSON);
+        DeleteCommand deleteServiceCommand = new DeleteCommand(EXISTING_SERVICE_NAME);
 
         // same object -> returns true
         assertTrue(deleteFirstCommand.equals(deleteFirstCommand));
@@ -242,6 +271,8 @@ public class DeleteCommandTest {
         DeleteCommand deleteFirstSessionCommandCopy = new DeleteCommand(INDEX_FIRST_PERSON, INDEX_FIRST_PERSON,
                 INDEX_FIRST_PERSON);
         assertTrue(deleteFirstSessionCommand.equals(deleteFirstSessionCommandCopy));
+        DeleteCommand deleteServiceCommandCopy = new DeleteCommand(EXISTING_SERVICE_NAME);
+        assertTrue(deleteServiceCommand.equals(deleteServiceCommandCopy));
 
         // different types -> returns false
         assertFalse(deleteFirstCommand.equals(1));
@@ -255,6 +286,7 @@ public class DeleteCommandTest {
         // different pet index state -> returns false
         assertFalse(deleteFirstCommand.equals(deleteFirstPetCommand));
         assertFalse(deleteFirstPetCommand.equals(deleteFirstSessionCommand));
+        assertFalse(deleteFirstCommand.equals(deleteServiceCommand));
     }
 
     @Test
@@ -262,7 +294,8 @@ public class DeleteCommandTest {
         Index targetIndex = Index.fromOneBased(1);
         DeleteCommand deleteCommand = new DeleteCommand(targetIndex);
         String expected = DeleteCommand.class.getCanonicalName()
-                + "{targetIndex=" + targetIndex + ", petIndex=Optional.empty, sessionIndex=Optional.empty}";
+                + "{targetIndex=Optional[" + targetIndex + "], petIndex=Optional.empty, sessionIndex=Optional.empty, "
+                + "serviceName=Optional.empty}";
         assertEquals(expected, deleteCommand.toString());
     }
 

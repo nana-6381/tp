@@ -3,6 +3,7 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_OWNER_INDEX;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PET_INDEX;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_SERVICE_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_SESSION_INDEX;
 
 import java.util.LinkedHashSet;
@@ -17,6 +18,7 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.person.Person;
 import seedu.address.model.pet.Pet;
+import seedu.address.model.service.Service;
 import seedu.address.model.session.Session;
 
 /**
@@ -27,58 +29,79 @@ public class DeleteCommand extends Command {
     public static final String COMMAND_WORD = "delete";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Deletes an owner, a pet under an owner, or a session under a pet.\n"
-            + "Parameters: " + PREFIX_OWNER_INDEX + "OWNER_INDEX "
-            + "[" + PREFIX_PET_INDEX + "PET_INDEX "
-            + "[" + PREFIX_SESSION_INDEX + "SESSION_INDEX]]\n"
+            + ": Deletes an owner, a pet, a session, or a service.\n"
+            + "Parameters: "
+            + PREFIX_OWNER_INDEX + "OWNER_INDEX ["
+            + PREFIX_PET_INDEX + "PET_INDEX ["
+            + PREFIX_SESSION_INDEX + "SESSION_INDEX]] | "
+            + PREFIX_SERVICE_NAME + "SERVICE_NAME\n"
             + "Examples:\n"
             + COMMAND_WORD + " " + PREFIX_OWNER_INDEX + "1\n"
             + COMMAND_WORD + " " + PREFIX_OWNER_INDEX + "1 " + PREFIX_PET_INDEX + "1\n"
             + COMMAND_WORD + " " + PREFIX_OWNER_INDEX + "1 " + PREFIX_PET_INDEX + "1 "
-            + PREFIX_SESSION_INDEX + "1";
+            + PREFIX_SESSION_INDEX + "1\n"
+            + COMMAND_WORD + " " + PREFIX_SERVICE_NAME + "Fur trim";
 
     public static final String MESSAGE_DELETE_PERSON_SUCCESS = "Deleted owner: %1$s";
     public static final String MESSAGE_DELETE_PET_SUCCESS = "Deleted pet: %1$s";
     public static final String MESSAGE_DELETE_SESSION_SUCCESS = "Deleted session: %1$s";
+    public static final String MESSAGE_DELETE_SERVICE_SUCCESS = "Deleted service: %1$s";
     public static final String MESSAGE_INVALID_PET_DISPLAYED_INDEX = Messages.MESSAGE_INVALID_PET_DISPLAYED_INDEX;
     public static final String MESSAGE_INVALID_SESSION_DISPLAYED_INDEX =
             Messages.MESSAGE_INVALID_SESSION_DISPLAYED_INDEX;
+    public static final String MESSAGE_INVALID_SERVICE_NAME = "Service name not found.";
 
-    private final Index targetIndex;
+    private final Optional<Index> targetIndex;
     private final Optional<Index> petIndex;
     private final Optional<Index> sessionIndex;
+    private final Optional<String> serviceName;
 
     /**
      * Creates an DeleteCommand to delete the specified {@code Person}
      */
     public DeleteCommand(Index targetIndex) {
-        this(targetIndex, null, null);
+        this(targetIndex, null, null, null);
     }
 
     /**
      * Creates an DeleteCommand to delete the specified {@code Pet}
      */
     public DeleteCommand(Index targetIndex, Index petIndex) {
-        this(targetIndex, petIndex, null);
+        this(targetIndex, petIndex, null, null);
     }
 
     /**
      * Creates a DeleteCommand to delete the specified {@code Session}.
      */
     public DeleteCommand(Index targetIndex, Index petIndex, Index sessionIndex) {
-        requireNonNull(targetIndex);
-        this.targetIndex = targetIndex;
+        this(targetIndex, petIndex, sessionIndex, null);
+    }
+
+    /**
+     * Creates a DeleteCommand to delete the specified {@code Service}.
+     */
+    public DeleteCommand(String serviceName) {
+        this(null, null, null, serviceName);
+    }
+
+    private DeleteCommand(Index targetIndex, Index petIndex, Index sessionIndex, String serviceName) {
+        this.targetIndex = Optional.ofNullable(targetIndex);
         this.petIndex = Optional.ofNullable(petIndex);
         this.sessionIndex = Optional.ofNullable(sessionIndex);
+        this.serviceName = Optional.ofNullable(serviceName);
     }
 
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
+        if (serviceName.isPresent()) {
+            return deleteService(model);
+        }
+
         List<Person> lastShownList = model.getFilteredPersonList();
         validateOwnerIndex(lastShownList);
 
-        Person personToDelete = lastShownList.get(targetIndex.getZeroBased());
+        Person personToDelete = lastShownList.get(targetIndex.get().getZeroBased());
         if (petIndex.isEmpty()) {
             model.deletePerson(personToDelete);
             model.updateDisplayedSessions(model.getFilteredPersonList());
@@ -117,8 +140,24 @@ public class DeleteCommand extends Command {
         return new CommandResult(String.format(MESSAGE_DELETE_SESSION_SUCCESS, sessionToDelete));
     }
 
+    private CommandResult deleteService(Model model) throws CommandException {
+        List<Service> lastShownServiceList = model.getServiceList();
+
+        Optional<Service> serviceToDelete = lastShownServiceList.stream()
+                .filter(service -> service.getName().equals(serviceName.get()))
+                .findFirst();
+
+        if (serviceToDelete.isEmpty()) {
+            throw new CommandException(MESSAGE_INVALID_SERVICE_NAME);
+        }
+
+        model.deleteService(serviceToDelete.get());
+        return new CommandResult(String.format(MESSAGE_DELETE_SERVICE_SUCCESS, serviceToDelete.get()));
+    }
+
     private void validateOwnerIndex(List<Person> lastShownList) throws CommandException {
-        if (targetIndex.getZeroBased() >= lastShownList.size()) {
+        assert targetIndex.isPresent();
+        if (targetIndex.get().getZeroBased() >= lastShownList.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_OWNER_DISPLAYED_INDEX);
         }
     }
@@ -151,7 +190,8 @@ public class DeleteCommand extends Command {
         DeleteCommand otherDeleteCommand = (DeleteCommand) other;
         return targetIndex.equals(otherDeleteCommand.targetIndex)
                 && petIndex.equals(otherDeleteCommand.petIndex)
-                && sessionIndex.equals(otherDeleteCommand.sessionIndex);
+                && sessionIndex.equals(otherDeleteCommand.sessionIndex)
+                && serviceName.equals(otherDeleteCommand.serviceName);
     }
 
     @Override
@@ -160,6 +200,7 @@ public class DeleteCommand extends Command {
                 .add("targetIndex", targetIndex)
                 .add("petIndex", petIndex)
                 .add("sessionIndex", sessionIndex)
+                .add("serviceName", serviceName)
                 .toString();
     }
 }
