@@ -17,18 +17,18 @@ public class SessionTest {
 
     @Test
     public void constructor_invalidDateTime_throwsIllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class, Session.MESSAGE_DATETIME_CONSTRAINTS,
-                () -> new Session("2026-02-30 10:00", VALID_END));
-        assertThrows(IllegalArgumentException.class, Session.MESSAGE_DATETIME_CONSTRAINTS,
-                () -> new Session("2026/03/25 10:00", VALID_END));
+        assertThrows(IllegalArgumentException.class, Session.MESSAGE_DATETIME_CONSTRAINTS, (
+                ) -> new Session("2026-02-30 10:00", VALID_END));
+        assertThrows(IllegalArgumentException.class, Session.MESSAGE_DATETIME_CONSTRAINTS, (
+                ) -> new Session("2026/03/25 10:00", VALID_END));
     }
 
     @Test
     public void constructor_endNotAfterStart_throwsIllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class, Session.MESSAGE_INVALID_TIME_RANGE,
-                () -> new Session(VALID_END, VALID_START));
-        assertThrows(IllegalArgumentException.class, Session.MESSAGE_INVALID_TIME_RANGE,
-                () -> new Session(VALID_START, VALID_START));
+        assertThrows(IllegalArgumentException.class, Session.MESSAGE_INVALID_TIME_RANGE, (
+                ) -> new Session(VALID_END, VALID_START));
+        assertThrows(IllegalArgumentException.class, Session.MESSAGE_INVALID_TIME_RANGE, (
+                ) -> new Session(VALID_START, VALID_START));
     }
 
     @Test
