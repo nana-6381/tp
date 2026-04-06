@@ -14,7 +14,18 @@ import seedu.address.model.pet.Pet;
 import seedu.address.model.session.Session;
 
 /**
- * Deletes a session from a pet.
+ * Deletes a specific {@link Session} from a {@link Pet} belonging to a {@link Person}.
+ *
+ * <p>The command requires three indices:
+ * <ul>
+ *   <li>Owner index</li>
+ *   <li>Pet index (within the owner)</li>
+ *   <li>Session index (within the pet)</li>
+ * </ul>
+ *
+ * <p>All indices are 1-based from the user's perspective.
+ *
+ * @see seedu.address.logic.parser.DeleteSessionCommandParser
  */
 public class DeleteSessionCommand extends Command {
 
@@ -31,18 +42,43 @@ public class DeleteSessionCommand extends Command {
     private final Index petIndex;
     private final Index sessionIndex;
 
+    /**
+     * Creates a DeleteSessionCommand to delete a session from a specific pet of an owner.
+     *
+     * @param ownerIdx index of the owner in the filtered person list
+     * @param petIdx index of the pet in the owner's pet list
+     * @param sessIdx index of the session in the pet's session list
+     */
     public DeleteSessionCommand(Index ownerIdx, Index petIdx, Index sessIdx) {
         this.ownerIndex = ownerIdx;
         this.petIndex = petIdx;
         this.sessionIndex = sessIdx;
     }
 
+    /**
+     * Executes the delete session command.
+     *
+     * <p>The method performs the following steps:
+     * <ol>
+     *   <li>Validates the owner index</li>
+     *   <li>Retrieves the specified pet</li>
+     *   <li>Validates the session index</li>
+     *   <li>Removes the session from the pet</li>
+     *   <li>Reconstructs the owner with the updated pet</li>
+     *   <li>Updates the model</li>
+     * </ol>
+     *
+     * @param model the model containing the data
+     * @return CommandResult indicating success with the deleted session
+     * @throws CommandException if any index is invalid
+     */
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
 
         List<Person> personList = model.getFilteredPersonList();
 
+        // Validate owner index
         if (ownerIndex.getZeroBased() >= personList.size()) {
             throw new CommandException("Invalid owner index");
         }
@@ -51,6 +87,7 @@ public class DeleteSessionCommand extends Command {
 
         List<Pet> pets = owner.getPetList();
 
+        // Validate pet index within selected owner
         if (petIndex.getZeroBased() >= pets.size()) {
             throw new CommandException("Invalid pet index");
         }
@@ -59,6 +96,7 @@ public class DeleteSessionCommand extends Command {
 
         List<Session> sessions = pet.getSessions();
 
+        // Validate session index within selected pet
         if (sessionIndex.getZeroBased() >= sessions.size()) {
             throw new CommandException("Invalid session index");
         }
@@ -68,7 +106,8 @@ public class DeleteSessionCommand extends Command {
         // Remove session
         pet.removeSession(sessionIndex.getZeroBased());
 
-        // Rebuild owner
+        // Rebuilds owner's pet set to reflect the updated pet
+        // LinkedHashSet preserves any important insertion order
         Set<Pet> updatedPets = new LinkedHashSet<>(owner.getPets());
         updatedPets.remove(pet);
         updatedPets.add(pet);
