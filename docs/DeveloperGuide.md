@@ -570,16 +570,15 @@ testers are expected to do more *exploratory* testing.
 
    1. Download the jar file and copy into an empty folder
 
-   1. Double-click the jar file Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
+   1. Double-click the jar file. <br>
+      Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
 
 1. Saving window preferences
 
    1. Resize the window to an optimum size. Move the window to a different location. Close the window.
 
    1. Re-launch the app by double-clicking the jar file.<br>
-       Expected: The most recent window size and location is retained.
-
-1. _{ more test cases …​ }_
+      Expected: The most recent window size and location is retained.
 
 ### Adding an owner
 
@@ -588,10 +587,10 @@ testers are expected to do more *exploratory* testing.
    1. Prerequisites: App is launched with sample data (contains owner `Alex Yeoh`).
 
    1. Test case: `addowner on/Jane Tan ph/81234567 em/jane.tan@gmail.com ad/12 Tampines Street 11, #03-55 ot/vip`<br>
-      Expected: A new owner is added and shown in the owner list. Success message starts with `New owner added:`.
+      Expected: A new owner is added and shown in the owner list.
 
    1. Test case: `addowner on/Alex Yeoh ph/99998888 em/alex.new@example.com ad/1 New Address`<br>
-      Expected: Command fails with `This owner already exists in PetLog`.
+      Expected: Command fails with `Owner already exists.`
 
    1. Test case: `addowner on/Jane Tan ph/81234567 em/jane.tan@gmail.com`<br>
       Expected: Command fails due to invalid format (missing required `ad/` prefix).
@@ -602,11 +601,11 @@ testers are expected to do more *exploratory* testing.
 
    1. Prerequisites: Use sample data (contains owner `Alex Yeoh` at index 1).
 
-   1. Test case: `edit oi/1 em/yeohalex@example.com` <br>
+   1. Test case: `editowner oi/1 em/yeohalex@example.com` <br>
       Expected: `Alex Yeoh`'s email updates to `yeohalex@example.com`.
 
-   1. Test case: `edit oi/1 oi/` <br>
-      Expected: `Alex Yeoh`'s existing `friends` tag is removed.
+   1. Test case: `editowner oi/1 ot/` <br>
+      Expected: `Alex Yeoh`'s existing tags are removed.
 
 ### Finding an owner
 
@@ -621,7 +620,7 @@ testers are expected to do more *exploratory* testing.
       Expected: Owner list shows only owners whose address contains `ang mo kio`.
 
    1. Test case: `find on/nonexistentowner`<br>
-      Expected: Owner list shows 0 results and status message indicates `0 persons listed!`.
+      Expected: Owner list shows 0 results and status message indicates `Listed 0 owner(s).`
 
 ### Finding a specific pet
 
@@ -645,10 +644,10 @@ testers are expected to do more *exploratory* testing.
    1. Prerequisites: Service `Ear cleaning` does not already exist.
 
    1. Test case: `addservice sn/Ear cleaning sp/12.50`<br>
-      Expected: Service is added to the service panel. Success message starts with `New service added:`.
+      Expected: Service is added to the service panel.
 
    1. Test case: `addservice sn/Ear cleaning sp/15.00`<br>
-      Expected: Command fails with `This service already exists in PetLog`.
+      Expected: Command fails with `Service already exists.`
 
    1. Test case: `addservice sn/Ear cleaning sp/-1`<br>
       Expected: Command fails with service price constraint error.
@@ -660,38 +659,34 @@ testers are expected to do more *exploratory* testing.
    1. Prerequisites: Service `Ear cleaning` exists (add it first if needed).
 
    1. Test case: `deleteservice sn/Ear cleaning`<br>
-      Expected: Service is removed from the service panel. Success message starts with `Deleted Service:`.
+      Expected: Service is removed from the service panel.
 
    1. Test case: `deleteservice sn/Nonexistent Service`<br>
-      Expected: Command fails with `The service name provided is invalid`.
+      Expected: Command fails with `Service name not found.`
 
    1. Test case: `deleteservice`<br>
       Expected: Command fails due to invalid format (missing required `sn/` prefix).
 
-### Deleting a person
+### Deleting an owner
 
-1. Deleting a person while all persons are being shown
+1. Deleting an owner while all persons are being shown
 
    1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
 
-   1. Test case: `delete 1`<br>
-      Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
+   1. Test case: `delete o/1`<br>
+      Expected: First owner is deleted from the list.
 
-   1. Test case: `delete 0`<br>
-      Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
+   1. Test case: `delete oi/0`<br>
+      Expected: No owner is deleted. Parse error shown with `Index must be a non-zero unsigned integer.`. Status bar remains the same.
 
-   1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
-      Expected: Similar to previous.
-
-1. _{ more test cases …​ }_
+   1. Other incorrect delete commands to try: `delete`, `delete oi/x`, `delete oi/999`<br>
+      Expected: For malformed index inputs, parse error is shown. For out-of-range valid indices, command fails with `Owner index is invalid.`.
 
 ### Saving data
 
 1. Dealing with missing/corrupted data files
 
    1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
-
-1. _{ more test cases …​ }_
 
 --------------------------------------------------------------------------------------------------------------------
 

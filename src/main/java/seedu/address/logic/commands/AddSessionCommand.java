@@ -41,10 +41,12 @@ public class AddSessionCommand extends Command {
             + PREFIX_SERVICE_NAME + "Shampoo "
             + PREFIX_SERVICE_NAME + "Fur trim";
 
-    public static final String MESSAGE_SUCCESS = "Session added for %s's pet %s from %s to %s";
-    public static final String MESSAGE_UNKNOWN_SERVICE = "Unknown service: %1$s";
+    public static final String MESSAGE_SUCCESS = "Added session for %s's pet %s from %s to %s.";
+    public static final String MESSAGE_UNKNOWN_SERVICE = "Unknown service: %1$s.";
     public static final String MESSAGE_OVERLAPPING_SESSION =
-            "This session overlaps with an existing session for the selected pet.";
+            "Session overlaps with an existing session for the selected pet.";
+    public static final String SESSION_PANEL_TITLE_FORMAT = "%s's %s — Sessions";
+
 
     private final Index ownerIndex;
     private final Index petIndex;
@@ -115,7 +117,7 @@ public class AddSessionCommand extends Command {
         model.updateDisplayedSessions(model.getFilteredPersonList());
 
         String baseMessage = String.format(MESSAGE_SUCCESS, owner.getName(), pet.getName(), startTime, endTime);
-        return new CommandResult(baseMessage + String.format(". Total fee: $%.2f", totalFee));
+        return new CommandResult(baseMessage + String.format(" Total fee: $%.2f.", totalFee));
     }
 
     /**
