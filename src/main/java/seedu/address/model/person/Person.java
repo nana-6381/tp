@@ -95,7 +95,9 @@ public class Person {
      */
     public boolean hasPet(Pet pet) {
         requireAllNonNull(pet);
-        return pets.stream().anyMatch(pet::isSamePet);
+        return pets.stream().anyMatch(existingPet ->
+                normalizePetName(existingPet).equals(normalizePetName(pet))
+                        && normalizeSpecies(existingPet).equals(normalizeSpecies(pet)));
     }
 
     /**
@@ -136,6 +138,14 @@ public class Person {
 
     private String normalizeName(Name name) {
         return name.fullName.trim().toLowerCase(Locale.ROOT);
+    }
+
+    private String normalizePetName(Pet pet) {
+        return pet.getName().value.trim().toLowerCase(Locale.ROOT);
+    }
+
+    private String normalizeSpecies(Pet pet) {
+        return pet.getSpecies().value.trim().toLowerCase(Locale.ROOT);
     }
 
     /**
