@@ -745,6 +745,12 @@ testers are expected to do more *exploratory* testing.
    1. Test case: `addpet oi/1 pn/Milo ps/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA`<br>
       Expected: Command fails with species validation error (`Species must be 1 to 30 characters.`).
 
+   1. Test case: `addpet oi/1 pn/Milo ps/Cat pr/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA`<br>
+      Expected: Command fails with remark validation error (`Remarks for addpet must be 1 to 100 characters.`).
+
+   1. Test case: `addpet oi/1 pn/Milo ps/Cat pr/`<br>
+      Expected: Command fails with remark validation error (`Remarks for addpet must be 1 to 100 characters.`).
+
    1. Test case: `addpet oi/1 pn/Milo pr/Friendly`<br>
       Expected: Command fails due to invalid format (missing required `ps/` prefix).
 

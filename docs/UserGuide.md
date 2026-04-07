@@ -125,7 +125,7 @@ Format: `addpet oi/OWNER_INDEX pn/PET_NAME ps/SPECIES [pr/REMARKS]`
 * `OWNER_INDEX` refers to the currently displayed owner list and must be a positive integer.
 * `PET_NAME` must be 1 to 30 characters, with no restrictions on character type.
 * `SPECIES` must be 1 to 30 characters, with no restrictions on character type.
-* `REMARKS`, if provided, must be at most 300 characters.
+* `REMARKS`, if provided, must be 1 to 100 characters, with no restrictions on character type.
 * A pet is considered a duplicate under the same owner if both its name and species match an existing pet for that owner.
 
 Examples:
