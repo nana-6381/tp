@@ -163,6 +163,21 @@ public class AddOwnerCommandParserTest {
     }
 
     @Test
+    public void parse_tagWithSpecialCharacters_success() {
+        String tag = "#Best_Customer!";
+        Person expectedPerson = new PersonBuilder()
+                .withName(VALID_NAME_BOB)
+                .withPhone(VALID_PHONE_BOB)
+                .withEmail(VALID_EMAIL_BOB)
+                .withAddress(VALID_ADDRESS_BOB)
+                .withTags(tag)
+                .build();
+
+        assertParseSuccess(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB + " ot/" + tag,
+                new AddOwnerCommand(expectedPerson));
+    }
+
+    @Test
     public void parse_fieldsWithLongWhitespace_success() {
         Person expectedPerson = new PersonBuilder()
                 .withName("Bob Choo")

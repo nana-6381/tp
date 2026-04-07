@@ -25,7 +25,7 @@ public class JsonAdaptedPersonTest {
     private static final String INVALID_PHONE = "1";
     private static final String INVALID_ADDRESS = "A".repeat(101);
     private static final String INVALID_EMAIL = "example.com";
-    private static final String INVALID_TAG = "#friend";
+    private static final String INVALID_TAG = "A".repeat(21);
 
     private static final String VALID_NAME = BENSON.getName().toString();
     private static final String VALID_PHONE = BENSON.getPhone().toString();
