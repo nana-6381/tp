@@ -23,7 +23,7 @@ import seedu.address.model.person.Person;
 
 /**
  * Finds and lists all owners in PetLog whose specified fields contain the given prefixed search strings.
- * Matching is case-insensitive.
+ * Matching is case-insensitive and OR-based across all provided search terms.
  */
 public class FindCommand extends Command {
 
@@ -42,12 +42,11 @@ public class FindCommand extends Command {
             + "[" + PREFIX_SPECIES + "SPECIES] "
             + "[" + PREFIX_PET_REMARK + "REMARKS]\n"
             + "At least one prefix must be provided.\n"
-            + "If pet prefixes are provided, listed owners must have at least one pet matching all pet criteria.\n"
+            + "Search is OR-based across all provided terms.\n"
+            + "Each whitespace-separated word is treated as a separate search term.\n"
             + "Example: " + COMMAND_WORD + " "
-            + PREFIX_OWNER_NAME + "john "
-            + PREFIX_PHONE + "9876 "
-            + PREFIX_TAG + "friend "
-            + PREFIX_PET_NAME + "snowball";
+            + PREFIX_OWNER_NAME + "avi jon "
+            + PREFIX_PET_NAME + "sam";
 
     private final FieldContainsKeywordsPredicate predicate;
     private final Optional<Index> ownerIndex;
