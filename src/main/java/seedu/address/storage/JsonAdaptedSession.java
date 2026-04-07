@@ -3,8 +3,13 @@ package seedu.address.storage;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.session.Session;
+import seedu.address.model.service.Service;
 
 /**
  * Jackson-friendly version of {@link Session}.
@@ -16,6 +21,7 @@ public class JsonAdaptedSession {
     private final String startTime;
     private final String endTime;
     private final double fee;
+    private final List<JsonAdaptedService> services;
 
     /**
      * Constructs a {@code JsonAdaptedSession} with the given session details.
@@ -23,10 +29,12 @@ public class JsonAdaptedSession {
     @JsonCreator
     public JsonAdaptedSession(@JsonProperty("startTime") String startTime,
                               @JsonProperty("endTime") String endTime,
-                              @JsonProperty("fee") double fee) {
+                              @JsonProperty("fee") double fee,
+                              @JsonProperty("services") List<JsonAdaptedService> services) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.fee = fee;
+        this.services = services != null ? services : new ArrayList<>();
     }
 
     /**
@@ -36,6 +44,9 @@ public class JsonAdaptedSession {
         this.startTime = source.getStartTime();
         this.endTime = source.getEndTime();
         this.fee = source.getFee();
+        this.services = source.getServices().stream()
+                .map(JsonAdaptedService::new)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -50,8 +61,14 @@ public class JsonAdaptedSession {
         if (endTime == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, "endTime"));
         }
+
+        List<Service> modelServices = new ArrayList<>();
+        for (JsonAdaptedService js : services) {
+            modelServices.add(js.toModelType());
+        }
+
         try {
-            return new Session(startTime, endTime, fee);
+            return new Session(startTime, endTime, fee, modelServices);
         } catch (IllegalArgumentException e) {
             throw new IllegalValueException(e.getMessage(), e);
         }
