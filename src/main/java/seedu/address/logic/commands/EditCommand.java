@@ -104,8 +104,18 @@ public class EditCommand extends Command {
         Phone updatedPhone = editPersonDescriptor.getPhone().orElse(personToEdit.getPhone());
         Email updatedEmail = editPersonDescriptor.getEmail().orElse(personToEdit.getEmail());
         Address updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
-        Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
         Set<Pet> updatedPets = personToEdit.getPets();
+        Set<Tag> updatedTags;
+
+        if (editPersonDescriptor.getTags().isPresent()) {
+            // full replacement: existing behaviour
+            updatedTags = new HashSet<>(editPersonDescriptor.getTags().get());
+        } else {
+            // increment update
+            updatedTags = new HashSet<>(personToEdit.getTags());
+            editPersonDescriptor.getTagsToAdd().ifPresent(updatedTags::addAll);
+            editPersonDescriptor.getTagsToRemove().ifPresent(updatedTags::removeAll);
+        }
 
         return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags, updatedPets);
     }
