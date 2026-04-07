@@ -37,6 +37,18 @@ public class TagTest {
         assertTrue(Tag.isValidTagName("a".repeat(50))); // 50 chars
         assertTrue(Tag.isValidTagName("hello!")); // includes !
         assertTrue(Tag.isValidTagName("what?")); // includes ?
+        assertTrue(Tag.isValidTagName("  abc123  ")); // leading/trailing whitespace is normalized
+    }
+
+    @Test
+    public void equals_caseInsensitiveAndWhitespaceInsensitive() {
+        Tag friend = new Tag("Friend");
+        Tag friendLower = new Tag("friend");
+        Tag friendWithWhitespace = new Tag("  friend ");
+
+        assertTrue(friend.equals(friendLower));
+        assertTrue(friend.equals(friendWithWhitespace));
+        assertFalse(friend.equals(new Tag("family")));
     }
 
 }
