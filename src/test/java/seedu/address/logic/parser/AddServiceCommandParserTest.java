@@ -27,6 +27,8 @@ public class AddServiceCommandParserTest {
 
     private static final String INVALID_SERVICE_NAME_DESC = " " + PREFIX_SERVICE_NAME + "A".repeat(31);
     private static final String INVALID_SERVICE_PRICE_DESC = " " + PREFIX_SERVICE_PRICE + "-1.00";
+    private static final String INVALID_TOO_HIGH_SERVICE_PRICE_DESC = " " + PREFIX_SERVICE_PRICE + "10000.01";
+    private static final String INVALID_NON_DIGIT_SERVICE_PRICE_DESC = " " + PREFIX_SERVICE_PRICE + "12a";
 
     private final AddServiceCommandParser parser = new AddServiceCommandParser();
 
@@ -101,6 +103,10 @@ public class AddServiceCommandParserTest {
 
         // invalid service price
         assertParseFailure(parser, SERVICE_NAME_DESC_FUR_TRIM + INVALID_SERVICE_PRICE_DESC,
+                Service.MESSAGE_PRICE_CONSTRAINTS);
+        assertParseFailure(parser, SERVICE_NAME_DESC_FUR_TRIM + INVALID_TOO_HIGH_SERVICE_PRICE_DESC,
+                Service.MESSAGE_PRICE_CONSTRAINTS);
+        assertParseFailure(parser, SERVICE_NAME_DESC_FUR_TRIM + INVALID_NON_DIGIT_SERVICE_PRICE_DESC,
                 Service.MESSAGE_PRICE_CONSTRAINTS);
 
         // non-empty preamble

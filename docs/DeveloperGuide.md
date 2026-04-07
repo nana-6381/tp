@@ -639,7 +639,8 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 * **Remarks** - Optional free-text notes attached to a pet or owner record (e.g., special care instructions, dietary needs).
 * **Owner index (`oi/`)** - A 1-based index into the currently displayed owner list.
 * **Pet index (`pi/`)** - A 1-based index into the selected owner's pet list.
-* **Service** - A globally defined care item (e.g., shampoo, nail trim) with a non-negative price.
+* **Service** - A globally defined care item (e.g., shampoo, nail trim) with a price from 0 to 10000 (inclusive),
+  up to 2 decimal places, using only digits and `.`.
 * **Service catalogue** - The full list of services stored in PetLog and reused by sessions.
 * **Session** - A care booking/event attached to one pet, with start/end times and a computed total fee.
 * **Fee** - The monetary total for a session, computed from selected services at session creation.
@@ -817,6 +818,12 @@ testers are expected to do more *exploratory* testing.
       Expected: Command fails with service name validation error (`Service name must be 1 to 30 characters.`).
 
    1. Test case: `addservice sn/Ear cleaning sp/-1`<br>
+      Expected: Command fails with service price constraint error.
+
+   1. Test case: `addservice sn/Ear cleaning sp/10000.01`<br>
+      Expected: Command fails with service price constraint error.
+
+   1. Test case: `addservice sn/Ear cleaning sp/12a`<br>
       Expected: Command fails with service price constraint error.
 
 ### Deleting a service

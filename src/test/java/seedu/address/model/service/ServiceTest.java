@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test;
 public class ServiceTest {
     private static final String VALID_MAX_LENGTH_SERVICE_NAME = "A".repeat(30);
     private static final String INVALID_TOO_LONG_SERVICE_NAME = "A".repeat(31);
+    private static final String VALID_MAX_SERVICE_PRICE = "10000.00";
+    private static final String INVALID_TOO_HIGH_SERVICE_PRICE = "10000.01";
 
     @Test
     public void constructor_nullName_throwsNullPointerException() {
@@ -25,6 +27,7 @@ public class ServiceTest {
     public void constructor_invalidPrice_throwsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class, () -> new Service("Shampoo", -1.00));
         assertThrows(IllegalArgumentException.class, () -> new Service("Shampoo", 10.999));
+        assertThrows(IllegalArgumentException.class, () -> new Service("Shampoo", 10000.01));
     }
 
     @Test
@@ -53,10 +56,15 @@ public class ServiceTest {
 
         assertFalse(Service.isValidServicePrice(""));
         assertFalse(Service.isValidServicePrice("-1"));
+        assertFalse(Service.isValidServicePrice(INVALID_TOO_HIGH_SERVICE_PRICE));
+        assertFalse(Service.isValidServicePrice("10001"));
         assertFalse(Service.isValidServicePrice("12.345"));
         assertFalse(Service.isValidServicePrice("abc"));
+        assertFalse(Service.isValidServicePrice("12a"));
 
         assertTrue(Service.isValidServicePrice("0"));
+        assertTrue(Service.isValidServicePrice("10000"));
+        assertTrue(Service.isValidServicePrice(VALID_MAX_SERVICE_PRICE));
         assertTrue(Service.isValidServicePrice("12"));
         assertTrue(Service.isValidServicePrice("12.3"));
         assertTrue(Service.isValidServicePrice("12.34"));
@@ -66,11 +74,13 @@ public class ServiceTest {
     @Test
     public void isValidServicePrice_double() {
         assertFalse(Service.isValidServicePrice(-1.00));
+        assertFalse(Service.isValidServicePrice(10000.01));
         assertFalse(Service.isValidServicePrice(12.345));
         assertFalse(Service.isValidServicePrice(Double.NaN));
         assertFalse(Service.isValidServicePrice(Double.POSITIVE_INFINITY));
 
         assertTrue(Service.isValidServicePrice(0.00));
+        assertTrue(Service.isValidServicePrice(10000.00));
         assertTrue(Service.isValidServicePrice(12.00));
         assertTrue(Service.isValidServicePrice(12.30));
         assertTrue(Service.isValidServicePrice(12.34));

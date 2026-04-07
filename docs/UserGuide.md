@@ -197,7 +197,8 @@ Format: `addservice sn/SERVICE_NAME sp/SERVICE_PRICE`
 
 * `SERVICE_NAME` must be 1 to 30 characters, with no restrictions on character type.
 * The service name must not match that of an existing service in the list (case-insensitive).
-* The price must be a non-negative number with up to 2 decimal places.
+* `SERVICE_PRICE` must be a number from `0` to `10000` (inclusive), with up to 2 decimal places.
+* `SERVICE_PRICE` can contain only digits and `.`.
 
 Examples:
 * `addservice sn/Ear Cleaning sp/12.50` adds Ear Cleaning as a service to the list with the price of 12.50.

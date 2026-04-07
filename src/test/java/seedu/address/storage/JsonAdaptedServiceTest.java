@@ -51,8 +51,10 @@ public class JsonAdaptedServiceTest {
     @Test
     public void toModelType_invalidCost_throwsIllegalValueException() {
         JsonAdaptedService negativeCostService = new JsonAdaptedService(VALID_SERVICE_NAME, -1.00);
+        JsonAdaptedService tooHighCostService = new JsonAdaptedService(VALID_SERVICE_NAME, 10000.01);
         JsonAdaptedService moreThanTwoDpService = new JsonAdaptedService(VALID_SERVICE_NAME, 12.345);
         assertThrows(IllegalValueException.class, Service.MESSAGE_PRICE_CONSTRAINTS, negativeCostService::toModelType);
+        assertThrows(IllegalValueException.class, Service.MESSAGE_PRICE_CONSTRAINTS, tooHighCostService::toModelType);
         assertThrows(IllegalValueException.class, Service.MESSAGE_PRICE_CONSTRAINTS,
                 moreThanTwoDpService::toModelType);
     }

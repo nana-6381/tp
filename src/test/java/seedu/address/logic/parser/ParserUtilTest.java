@@ -36,6 +36,8 @@ public class ParserUtilTest {
     private static final String INVALID_TOO_LONG_SPECIES = "A".repeat(31);
     private static final String INVALID_SERVICE_NAME = "A".repeat(31);
     private static final String INVALID_SERVICE_PRICE = "-5.00";
+    private static final String INVALID_SERVICE_PRICE_NON_DIGIT = "12a";
+    private static final String INVALID_SERVICE_PRICE_TOO_HIGH = "10000.01";
     private static final String INVALID_SERVICE_PRICE_MORE_THAN_TWO_DP = "20.123";
     private static final String INVALID_DATE_TIME = "2026-02-30 10:00";
     private static final String INVALID_DATE_TIME_FORMAT = "2026/03/25 10:00";
@@ -51,6 +53,7 @@ public class ParserUtilTest {
     private static final String VALID_SERVICE_NAME = "Fur trim";
     private static final String VALID_SERVICE_NAME_WITH_SPECIAL_CHARACTERS = "@wash!*";
     private static final String VALID_SERVICE_PRICE = "25.50";
+    private static final String VALID_MAX_SERVICE_PRICE = "10000.00";
     private static final String VALID_DATE_TIME = "2026-03-25 10:00";
 
     private static final String WHITESPACE = " \t\r\n";
@@ -385,6 +388,18 @@ public class ParserUtilTest {
     }
 
     @Test
+    public void parseServicePrice_nonDigitValue_throwsParseException() {
+        assertThrows(ParseException.class, Service.MESSAGE_PRICE_CONSTRAINTS, ()
+                -> ParserUtil.parseServicePrice(INVALID_SERVICE_PRICE_NON_DIGIT));
+    }
+
+    @Test
+    public void parseServicePrice_tooHighValue_throwsParseException() {
+        assertThrows(ParseException.class, Service.MESSAGE_PRICE_CONSTRAINTS, ()
+                -> ParserUtil.parseServicePrice(INVALID_SERVICE_PRICE_TOO_HIGH));
+    }
+
+    @Test
     public void parseServicePrice_moreThanTwoDp_throwsParseException() {
         assertThrows(ParseException.class, Service.MESSAGE_PRICE_CONSTRAINTS, ()
                 -> ParserUtil.parseServicePrice(INVALID_SERVICE_PRICE_MORE_THAN_TWO_DP));
@@ -394,6 +409,11 @@ public class ParserUtilTest {
     public void parseServicePrice_validValueWithWhitespace_returnsServicePrice() throws Exception {
         String servicePriceWithWhitespace = WHITESPACE + VALID_SERVICE_PRICE + WHITESPACE;
         assertEquals(25.50, ParserUtil.parseServicePrice(servicePriceWithWhitespace), 1e-9);
+    }
+
+    @Test
+    public void parseServicePrice_validUpperBound_returnsServicePrice() throws Exception {
+        assertEquals(10000.00, ParserUtil.parseServicePrice(VALID_MAX_SERVICE_PRICE), 1e-9);
     }
 
     @Test
