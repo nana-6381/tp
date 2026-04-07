@@ -8,6 +8,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_SERVICE_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_START_TIME;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.ToStringBuilder;
@@ -101,10 +102,14 @@ public class AddSessionCommand extends Command {
 
         Pet pet = owner.getPetList().get(petIndex.getZeroBased());
 
-        double totalFee = calculateTotalFee(model.getServiceList());
+        List<Service> selectedServices = getSelectedServices(model.getServiceList());
+        double totalFee = selectedServices.stream()
+                .mapToDouble(Service::getCost)
+                .sum();
+
         Session newSession;
         try {
-            newSession = new Session(startTime, endTime, totalFee);
+            newSession = new Session(startTime, endTime, totalFee, selectedServices);
         } catch (IllegalArgumentException e) {
             throw new CommandException(e.getMessage(), e);
         }
@@ -118,6 +123,26 @@ public class AddSessionCommand extends Command {
 
         String baseMessage = String.format(MESSAGE_SUCCESS, owner.getName(), pet.getName(), startTime, endTime);
         return new CommandResult(baseMessage + String.format(" Total fee: $%.2f.", totalFee));
+    }
+
+    /**
+     * Returns the list of services matching the specified service names.
+     *
+     * @param availServices     The list of available services.
+     * @return                  The list of selected services.
+     * @throws CommandException If no specified service can be found.
+     */
+    private List<Service> getSelectedServices(List<Service> availServices) throws CommandException {
+        List<Service> result = new ArrayList<>();
+
+        for (String serviceName : serviceNames) {
+            Service matched = findServiceByName(availServices, serviceName);
+            if (matched == null) {
+                throw new CommandException(String.format(MESSAGE_UNKNOWN_SERVICE, serviceName));
+            }
+            result.add(matched);
+        }
+        return result;
     }
 
     /**
