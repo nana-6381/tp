@@ -2,12 +2,11 @@ package seedu.address.model.session;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.List;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
+import java.util.List;
 import java.util.Objects;
 
 import seedu.address.commons.util.ToStringBuilder;
