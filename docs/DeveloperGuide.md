@@ -465,29 +465,6 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
     Use case ends.
 
-**Use case: Find Pet**
-
-**MSS**
-
-1. User searches for pets by keywords
-2. PetLog finds matching pets
-3. PetLog displays a list of matching pets
-4. PetLog informs user of the number of matching pets
-
-    Use case ends.
-
-**Extensions**
-
-* 1a. No prefixes, unrecognized prefixes, malformed command
-  * 1a1. PetLog shows a relevant error message
-
-    Use case ends.
-
-* 1b. Invalid field contents entered in search
-  * 1b1. PetLog displays that there are 0 matches
-
-    Use case ends.
-
 **Use case: List**
 
 **MSS**
@@ -775,10 +752,10 @@ testers are expected to do more *exploratory* testing.
       Expected: Owner list shows owners with at least one pet whose name contains `buddy`.
 
    1. Test case: `find pn/buddy ps/dog`<br>
-      Expected: Owner list shows owners with at least one pet matching both pet name and species criteria.
+      Expected: Owner list shows owners with at least one pet matching pet name or species criteria.
 
    1. Test case: `find on/alex pn/buddy`<br>
-      Expected: Owner list shows owners matching both owner and pet criteria.
+      Expected: Owner list shows owners matching owner name or pet name criteria.
 
 ### Adding a service
 
