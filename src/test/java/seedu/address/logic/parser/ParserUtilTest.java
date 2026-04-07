@@ -19,6 +19,7 @@ import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
 import seedu.address.model.pet.PetName;
+import seedu.address.model.pet.Species;
 import seedu.address.model.service.Service;
 import seedu.address.model.tag.Tag;
 
@@ -31,6 +32,8 @@ public class ParserUtilTest {
     private static final String INVALID_TAG = "A".repeat(21);
     private static final String INVALID_PET_NAME = " ";
     private static final String INVALID_TOO_LONG_PET_NAME = "A".repeat(31);
+    private static final String INVALID_SPECIES = " ";
+    private static final String INVALID_TOO_LONG_SPECIES = "A".repeat(31);
     private static final String INVALID_SERVICE_NAME = "@wash";
     private static final String INVALID_SERVICE_PRICE = "-5.00";
     private static final String INVALID_SERVICE_PRICE_MORE_THAN_TWO_DP = "20.123";
@@ -44,6 +47,7 @@ public class ParserUtilTest {
     private static final String VALID_TAG_1 = "friend";
     private static final String VALID_TAG_2 = "neighbour";
     private static final String VALID_PET_NAME = "Buddy";
+    private static final String VALID_SPECIES = "Dog";
     private static final String VALID_SERVICE_NAME = "Fur trim";
     private static final String VALID_SERVICE_PRICE = "25.50";
     private static final String VALID_DATE_TIME = "2026-03-25 10:00";
@@ -298,6 +302,47 @@ public class ParserUtilTest {
     public void parsePetName_validValueWithLongWhitespace_returnsNormalizedPetName() throws Exception {
         PetName expectedPetName = new PetName("Mary Jane");
         assertEquals(expectedPetName, ParserUtil.parsePetName(" Mary   \t Jane "));
+    }
+
+    @Test
+    public void parseSpecies_null_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> ParserUtil.parseSpecies(null));
+    }
+
+    @Test
+    public void parseSpecies_invalidValue_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseSpecies(INVALID_SPECIES));
+    }
+
+    @Test
+    public void parseSpecies_tooLongValue_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseSpecies(INVALID_TOO_LONG_SPECIES));
+    }
+
+    @Test
+    public void parseSpecies_validValueWithoutWhitespace_returnsSpecies() throws Exception {
+        Species expectedSpecies = new Species(VALID_SPECIES);
+        assertEquals(expectedSpecies, ParserUtil.parseSpecies(VALID_SPECIES));
+    }
+
+    @Test
+    public void parseSpecies_validValueWithSpecialCharacters_returnsSpecies() throws Exception {
+        String speciesWithSpecialCharacters = "D0g-@Home";
+        Species expectedSpecies = new Species(speciesWithSpecialCharacters);
+        assertEquals(expectedSpecies, ParserUtil.parseSpecies(speciesWithSpecialCharacters));
+    }
+
+    @Test
+    public void parseSpecies_validValueWithWhitespace_returnsTrimmedSpecies() throws Exception {
+        String speciesWithWhitespace = WHITESPACE + VALID_SPECIES + WHITESPACE;
+        Species expectedSpecies = new Species(VALID_SPECIES);
+        assertEquals(expectedSpecies, ParserUtil.parseSpecies(speciesWithWhitespace));
+    }
+
+    @Test
+    public void parseSpecies_validValueWithLongWhitespace_returnsNormalizedSpecies() throws Exception {
+        Species expectedSpecies = new Species("Sea Lion");
+        assertEquals(expectedSpecies, ParserUtil.parseSpecies(" Sea   \t Lion "));
     }
 
     @Test
