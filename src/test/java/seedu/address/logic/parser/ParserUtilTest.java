@@ -25,6 +25,7 @@ public class ParserUtilTest {
     private static final String INVALID_NAME = "A".repeat(51);
     private static final String INVALID_PHONE = "1";
     private static final String INVALID_ADDRESS = " ";
+    private static final String INVALID_TOO_LONG_ADDRESS = "A".repeat(101);
     private static final String INVALID_EMAIL = "example.com";
     private static final String INVALID_TAG = "#friend";
     private static final String INVALID_SERVICE_NAME = "@wash";
@@ -148,9 +149,21 @@ public class ParserUtilTest {
     }
 
     @Test
+    public void parseAddress_tooLongValue_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseAddress(INVALID_TOO_LONG_ADDRESS));
+    }
+
+    @Test
     public void parseAddress_validValueWithoutWhitespace_returnsAddress() throws Exception {
         Address expectedAddress = new Address(VALID_ADDRESS);
         assertEquals(expectedAddress, ParserUtil.parseAddress(VALID_ADDRESS));
+    }
+
+    @Test
+    public void parseAddress_validValueWithSpecialCharacters_returnsAddress() throws Exception {
+        String addressWithSpecialCharacters = "Unit #05-01 @ Pet-Hub / Block A";
+        Address expectedAddress = new Address(addressWithSpecialCharacters);
+        assertEquals(expectedAddress, ParserUtil.parseAddress(addressWithSpecialCharacters));
     }
 
     @Test

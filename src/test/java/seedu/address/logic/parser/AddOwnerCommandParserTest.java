@@ -149,6 +149,20 @@ public class AddOwnerCommandParserTest {
     }
 
     @Test
+    public void parse_addressWithSpecialCharacters_success() {
+        String address = "Unit #05-01 @ Pet-Hub / Block A";
+        Person expectedPerson = new PersonBuilder()
+                .withName(VALID_NAME_BOB)
+                .withPhone(VALID_PHONE_BOB)
+                .withEmail(VALID_EMAIL_BOB)
+                .withAddress(address)
+                .build();
+
+        assertParseSuccess(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + " " + PREFIX_ADDRESS + address,
+                new AddOwnerCommand(expectedPerson));
+    }
+
+    @Test
     public void parse_fieldsWithLongWhitespace_success() {
         Person expectedPerson = new PersonBuilder()
                 .withName("Bob Choo")

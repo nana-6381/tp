@@ -56,13 +56,13 @@ It helps you manage owners, pets, services, and sessions quickly with structured
   e.g. in `addowner on/OWNER_NAME`, `OWNER_NAME` is a parameter which can be used as `addowner on/John Doe`.
 
 * Items in square brackets are optional.<br>
-  e.g. `on/NAME [ot/TAG]` can be used as `on/John Doe ot/priority` or as `on/John Doe`.
+  e.g. `on/OWNER_NAME [ot/TAG]` can be used as `on/John Doe ot/priority` or as `on/John Doe`.
 
 * Items with `…`​ after them can be used multiple times including zero times.<br>
   e.g. `[ot/TAG]…​` can be used as ` ` (i.e. 0 times), `ot/friend`, `ot/friend ot/family` etc.
 
 * Parameters can be in any order.<br>
-  e.g. if the command specifies `on/NAME ph/PHONE_NUMBER`, `ph/PHONE_NUMBER on/NAME` is also acceptable.
+  e.g. if the command specifies `on/OWNER_NAME ph/PHONE_NUMBER`, `ph/PHONE_NUMBER on/OWNER_NAME` is also acceptable.
 
 * Extraneous parameters for commands that do not take in parameters (such as `help`, `list`, `exit` and `clear`) will be ignored.<br>
   e.g. if the command specifies `help 123`, it will be interpreted as `help`.
@@ -89,7 +89,7 @@ Format: `addowner on/OWNER_NAME ph/PHONE_NUMBER em/EMAIL ad/ADDRESS [ot/TAG]…�
 * `PHONE_NUMBER` must be 2 to 30 characters.
 * If `PHONE_NUMBER` contains any non-numeric characters, the command still succeeds and shows a warning.
 * `EMAIL` must be of the form `local-part@domain`.
-* `ADDRESS` must be 1 to 60 characters.
+* `ADDRESS` must be 1 to 100 characters.
 * Each `TAG`, if provided, must be 1 to 50 characters and use only letters, numbers, `!`, or `?`.
 
 Examples:
