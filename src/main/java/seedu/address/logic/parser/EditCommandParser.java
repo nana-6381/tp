@@ -47,6 +47,13 @@ public class EditCommandParser implements Parser<EditCommand> {
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_OWNER_INDEX, PREFIX_OWNER_NAME,
                 PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS);
 
+        // precent mixing replace tags with add / remove tags
+        if (!argMultimap.getAllValues(PREFIX_TAG).isEmpty()
+                && (!argMultimap.getAllValues(PREFIX_ADD_TAG).isEmpty()
+                || !argMultimap.getAllValues(PREFIX_REMOVE_TAG).isEmpty())) {
+            throw new ParseException("Cannot use ot/ with at/ or rt/ together.");
+        }
+
         Index index = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_OWNER_INDEX).get());
 
         EditPersonDescriptor editPersonDescriptor = new EditPersonDescriptor();
@@ -63,19 +70,19 @@ public class EditCommandParser implements Parser<EditCommand> {
         if (argMultimap.getValue(PREFIX_ADDRESS).isPresent()) {
             editPersonDescriptor.setAddress(ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get()));
         }
-        parseTagsForEdit(argMultimap.getAllValues(PREFIX_TAG)).ifPresent(editPersonDescriptor::setTags);
 
-        if (!editPersonDescriptor.isAnyFieldEdited()) {
-            throw new ParseException(EditCommand.MESSAGE_NOT_EDITED);
-        }
-
-        parseTagsForEdit(argMultimap.getAllValues(PREFIX_TAG)).ifPresent(editPersonDescriptor::setTags);
+        parseTagsForEdit(argMultimap.getAllValues(PREFIX_TAG))
+                .ifPresent(editPersonDescriptor::setTags);
 
         parseTagsForEdit(argMultimap.getAllValues(PREFIX_ADD_TAG))
                 .ifPresent(editPersonDescriptor::setTagsToAdd);
 
         parseTagsForEdit(argMultimap.getAllValues(PREFIX_REMOVE_TAG))
                 .ifPresent(editPersonDescriptor::setTagsToRemove);
+
+        if (!editPersonDescriptor.isAnyFieldEdited()) {
+            throw new ParseException(EditCommand.MESSAGE_NOT_EDITED);
+        }
 
         return new EditCommand(index, editPersonDescriptor);
     }

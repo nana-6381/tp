@@ -171,6 +171,8 @@ public class EditCommand extends Command {
             setAddress(toCopy.address);
             setTags(toCopy.tags);
             setPets(toCopy.pets);
+            setTagsToAdd(toCopy.tagsToAdd);
+            setTagsToRemove(toCopy.tagsToRemove);
         }
 
         /**
@@ -302,7 +304,9 @@ public class EditCommand extends Command {
                     && Objects.equals(email, otherEditPersonDescriptor.email)
                     && Objects.equals(address, otherEditPersonDescriptor.address)
                     && Objects.equals(tags, otherEditPersonDescriptor.tags)
-                    && Objects.equals(pets, otherEditPersonDescriptor.pets);
+                    && Objects.equals(pets, otherEditPersonDescriptor.pets)
+                    && Objects.equals(tagsToAdd, otherEditPersonDescriptor.tagsToAdd)
+                    && Objects.equals(tagsToRemove, otherEditPersonDescriptor.tagsToRemove);
         }
 
         @Override
@@ -314,6 +318,8 @@ public class EditCommand extends Command {
                     .add("address", address)
                     .add("tags", tags)
                     .add("pets", pets)
+                    .add("tagsToAdd", tagsToAdd)
+                    .add("tagsToRemove", tagsToRemove)
                     .toString();
         }
     }
