@@ -86,7 +86,8 @@ Format: `addowner on/OWNER_NAME ph/PHONE_NUMBER em/EMAIL ad/ADDRESS [ot/TAG]â€¦â
 
 * An owner can have any number of tags (including 0).
 * `OWNER_NAME` must be 1 to 50 characters.
-* `PHONE_NUMBER` must be 3 to 15 characters and use only digits, spaces, `+`, or `-`.
+* `PHONE_NUMBER` must be 2 to 30 characters.
+* If `PHONE_NUMBER` contains any non-numeric characters, the command still succeeds and shows a warning.
 * `EMAIL` must be of the form `local-part@domain`.
 * `ADDRESS` must be 1 to 60 characters.
 * Each `TAG`, if provided, must be 1 to 50 characters and use only letters, numbers, `!`, or `?`.

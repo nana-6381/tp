@@ -690,6 +690,9 @@ testers are expected to do more *exploratory* testing.
    1. Test case: `addowner on/Jane_#VIP! ph/81234568 em/jane.vip@gmail.com ad/13 Tampines Street 12, #03-56`<br>
       Expected: A new owner is added and shown in the owner list.
 
+   1. Test case: `addowner on/Jane Tan ph/8123-4567 em/jane.alt@gmail.com ad/14 Tampines Street 13, #03-57`<br>
+      Expected: A new owner is added and a warning is shown because the phone contains non-numeric characters.
+
    1. Test case: `addowner on/Alex Yeoh ph/99998888 em/alex.new@example.com ad/1 New Address`<br>
       Expected: Command fails with `Owner already exists.`
 
@@ -698,6 +701,9 @@ testers are expected to do more *exploratory* testing.
 
    1. Test case: `addowner on/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA ph/81234567 em/jane.tan@gmail.com ad/12 Tampines Street 11, #03-55`<br>
       Expected: Command fails with owner name validation error (owner name must be 1 to 50 characters).
+
+   1. Test case: `addowner on/Jane Tan ph/1 em/jane.tan@gmail.com ad/12 Tampines Street 11, #03-55`<br>
+      Expected: Command fails with phone validation error (phone number must be 2 to 30 characters).
 
 ### Adding a pet
 
