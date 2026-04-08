@@ -146,9 +146,12 @@ The `Model` component,
 <img src="images/StorageClassDiagram.png" width="550" />
 
 The `Storage` component,
-* can save both PetLog data and user preference data in JSON format, and read them back into corresponding objects.
-* inherits from both `AddressBookStorage` and `UserPrefStorage`, which means it can be treated as either one (if only the functionality of only one is needed).
-* depends on some classes in the `Model` component (because the `Storage` component's job is to save/retrieve objects that belong to the `Model`)
+* exposes a unified `Storage` API that extends both `AddressBookStorage` and `UserPrefsStorage`.
+* is implemented by `StorageManager`, which delegates to `JsonAddressBookStorage` (PetLog data) and `JsonUserPrefsStorage` (user preferences).
+* persists `ReadOnlyAddressBook` as JSON through `JsonSerializableAddressBook`, which uses Jackson-friendly adapters (`JsonAdaptedPerson`, `JsonAdaptedPet`, `JsonAdaptedSession`, `JsonAdaptedService`, `JsonAdaptedTag`) to convert between JSON and model types.
+* preserves nested domain data when reading/writing: owners include pets, pets include sessions, and sessions include services; the address book also stores a top-level service list.
+* returns `Optional.empty()` when data files are missing, and throws `DataLoadingException` when file contents are malformed or violate model constraints.
+* is invoked by `LogicManager` to save the address book after each successful command, while user preferences are loaded/saved during app startup and shutdown in `MainApp`.
 
 ### Common classes
 
