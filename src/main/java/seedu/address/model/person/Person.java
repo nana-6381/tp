@@ -7,7 +7,6 @@ import static seedu.address.commons.util.StringUtil.normalizeWhitespace;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
@@ -107,19 +106,8 @@ public class Person {
      * @param newRemark value of the updated remark
      */
     public void updatePetRemark(int petIndex, String newRemark) {
-        Iterator<Pet> it = pets.iterator();
-        int currIndex = 0;
-        Pet currentPet;
-
-        while (it.hasNext()) {
-            currentPet = it.next();
-
-            if (currIndex == petIndex) {
-                currentPet.updateRemark(newRemark);
-                break;
-            }
-            currIndex++;
-        }
+        Pet petToUpdate = getPetList().get(petIndex);
+        petToUpdate.updateRemark(newRemark);
     }
 
     /**
