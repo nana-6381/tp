@@ -14,7 +14,7 @@ It helps you manage owners, pets, services, and sessions quickly with structured
 
 ## Quick start
 
-1. Ensure you have Java `17` or above installed in your Computer.<br>
+1. Ensure you have Java `17` or above installed in your computer.<br>
    **Mac users:** Ensure you have the precise JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationMac.html).
 
 1. Download the latest `petlog.jar` file from the [releases page](https://github.com/AY2526S2-CS2103T-W14-1/tp/releases).

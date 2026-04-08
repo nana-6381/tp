@@ -71,7 +71,7 @@ The sections below give more details of each component.
 
 The **API** of this component is specified in [`Ui.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/ui/Ui.java)
 
-![Structure of the UI Component](images/UiClassDiagram.png)
+<img src="images/UiClassDiagram.png" width="600"/>
 
 The UI consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `OwnerListPanel`, `PetListPanel`, `SessionListPanel`, `ServiceListPanel`, `StatusBarFooter` etc. All these, including the `MainWindow`, inherit from the abstract `UiPart` class which captures the commonalities between classes that represent parts of the visible GUI.
 
@@ -109,7 +109,7 @@ How the `Logic` component works:
 
 Here are the other classes in `Logic` (omitted from the class diagram above) that are used for parsing a user command:
 
-<img src="images/ParserClasses.png" width="600"/>
+<img src="images/ParserClasses.png" width="800"/>
 
 How the parsing works:
 * When called upon to parse a user command, the `AddressBookParser` class creates an `XYZCommandParser` (`XYZ` is a placeholder for the specific command name e.g., `AddOwnerCommandParser`) which uses the other classes shown above to parse the user command and create a `XYZCommand` object (e.g., `AddOwnerCommand`) which the `AddressBookParser` returns back as a `Command` object.
@@ -121,6 +121,9 @@ How the parsing works:
 
 <img src="images/ModelClassDiagram.png" width="800" />
 
+<div markdown="span" class="alert alert-info">:information_source: **Note:** Owner and pet fields (e.g. `Address`, `Species`) have been omitted from the diagram.
+
+</div>
 
 The `Model` component,
 
