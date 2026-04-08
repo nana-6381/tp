@@ -10,8 +10,8 @@
 <VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
   <GridPane styleClass="owner-pet-header">
     <columnConstraints>
-      <ColumnConstraints percentWidth="56" hgrow="ALWAYS" />
-      <ColumnConstraints percentWidth="44" hgrow="ALWAYS" />
+      <ColumnConstraints percentWidth="55" hgrow="ALWAYS" />
+      <ColumnConstraints percentWidth="45" hgrow="ALWAYS" />
     </columnConstraints>
     <Label fx:id="ownersHeader" text="Owners"
            styleClass="owner-pet-header-label" GridPane.columnIndex="0" GridPane.halignment="LEFT">
