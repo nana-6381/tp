@@ -9,8 +9,8 @@ title: Developer Guide
 
 ## **Acknowledgements**
 
-* This project is based on the AddressBook-Level3 project created by the [SE-EDU initiative](https://se-education.org). We used the codebase as a starting point for our implementation of Owners.
-* The Sessions feature was inspired by NUS CS2103/T Project Duke's [Level 7](https://nus-cs2103-ay2526-s2.github.io/website/se-book-adapted/projectDuke/index.html#level-7-save) and [Level 8](https://nus-cs2103-ay2526-s2.github.io/website/se-book-adapted/projectDuke/index.html#level-8-dates-and-times). A similar implementation was used in understanding user inputs as dates and times for our Sessions.
+* This project is based on the AddressBook-Level3 project created by the [SE-EDU initiative](https://se-education.org). We used that codebase as a starting point for PetLog.
+* The session feature was inspired by NUS CS2103/T Project Duke's [Level 7](https://nus-cs2103-ay2526-s2.github.io/website/se-book-adapted/projectDuke/index.html#level-7-save) and [Level 8](https://nus-cs2103-ay2526-s2.github.io/website/se-book-adapted/projectDuke/index.html#level-8-dates-and-times). We used a similar approach when handling session date/time inputs.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -37,9 +37,9 @@ Given below is a quick overview of main components and how they interact with ea
 
 **Main components of the architecture**
 
-**`Main`** (consisting of classes [`Main`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/Main.java) and [`MainApp`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/MainApp.java)) is in charge of the app launch and shut down.
-* At app launch, it initializes the other components in the correct sequence, and connects them up with each other.
-* At shut down, it shuts down the other components and invokes cleanup methods where necessary.
+**`Main`** (consisting of classes [`Main`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/Main.java) and [`MainApp`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/MainApp.java)) is in charge of app launch and shutdown.
+* At app launch, it initialises the other components in the correct sequence, and connects them up with each other.
+* At shutdown, it shuts down the other components and invokes cleanup methods where necessary.
 
 The bulk of the app's work is done by the following four components:
 
@@ -61,7 +61,7 @@ Each of the four main components (also shown in the diagram above),
 * defines its *API* in an `interface` with the same name as the Component.
 * implements its functionality using a concrete `{Component Name}Manager` class, which follows the corresponding API `interface` mentioned in the previous point.
 
-For example, the `Logic` component defines its API in the `Logic.java` interface and implements its functionality using the `LogicManager.java` class which follows the `Logic` interface. Other components interact with a given component through its interface rather than the concrete class (reason: to prevent outside component's being coupled to the implementation of a component), as illustrated in the (partial) class diagram below.
+For example, the `Logic` component defines its API in the `Logic.java` interface and implements its functionality using the `LogicManager.java` class which follows the `Logic` interface. Other components interact with a given component through its interface rather than the concrete class (reason: to prevent outside components from being coupled to a component's implementation), as illustrated in the (partial) class diagram below.
 
 <img src="images/ComponentManagers.png" width="300" />
 
@@ -73,9 +73,9 @@ The **API** of this component is specified in [`Ui.java`](https://github.com/se-
 
 <img src="images/UiClassDiagram.png" width="1000"/>
 
-The UI consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `OwnerListPanel`, `PetListPanel`, `SessionListPanel`, `ServiceListPanel`, `StatusBarFooter` etc. All these, including the `MainWindow`, inherit from the abstract `UiPart` class which captures the commonalities between classes that represent parts of the visible GUI.
+The UI consists of a `MainWindow` that is made up of parts, e.g., `CommandBox`, `ResultDisplay`, `OwnerListPanel`, `PetListPanel`, `SessionListPanel`, `ServiceListPanel`, `StatusBarFooter`, etc. All these, including the `MainWindow`, inherit from the abstract `UiPart` class which captures the commonalities between classes that represent parts of the visible GUI.
 
-The `UI` component uses the JavaFx UI framework. The layout of these UI parts are defined in matching `.fxml` files that are in the `src/main/resources/view` folder. For example, the layout of the [`MainWindow`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/ui/MainWindow.java) is specified in [`MainWindow.fxml`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/resources/view/MainWindow.fxml)
+The `UI` component uses the JavaFX UI framework. The layouts of these UI parts are defined in matching `.fxml` files in the `src/main/resources/view` folder. For example, the layout of the [`MainWindow`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/ui/MainWindow.java) is specified in [`MainWindow.fxml`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/resources/view/MainWindow.fxml).
 
 The `UI` component,
 
@@ -112,8 +112,8 @@ Here are the other classes in `Logic` (omitted from the class diagram above) tha
 <img src="images/ParserClasses.png" width="800"/>
 
 How the parsing works:
-* When called upon to parse a user command, the `AddressBookParser` class creates an `XYZCommandParser` (`XYZ` is a placeholder for the specific command name e.g., `AddOwnerCommandParser`) which uses the other classes shown above to parse the user command and create a `XYZCommand` object (e.g., `AddOwnerCommand`) which the `AddressBookParser` returns back as a `Command` object.
-* All `XYZCommandParser` classes (e.g., `AddOwnerCommandParser`, `DeleteCommandParser`, ...) inherit from the `Parser` interface so that they can be treated similarly where possible e.g, during testing.
+* When called upon to parse a user command, `AddressBookParser` creates an `XYZCommandParser` (`XYZ` is a placeholder for the specific command name, e.g., `AddOwnerCommandParser`). That parser uses the supporting classes shown above to parse input and create an `XYZCommand` object (e.g., `AddOwnerCommand`), which `AddressBookParser` returns as a `Command`.
+* All `XYZCommandParser` classes (e.g., `AddOwnerCommandParser`, `DeleteCommandParser`, ...) inherit from the `Parser` interface so that they can be treated similarly where possible, e.g., during testing.
 
 ### Model component
 
@@ -181,7 +181,7 @@ Key implementation points:
 
 ### Service catalogue
 
-Services are stored as a top-level catalog in `AddressBook` via `UniqueServiceList`.
+Services are stored as a top-level catalogue in `AddressBook` via `UniqueServiceList`.
 
 Key implementation points:
 * `addservice` validates service name/price through `ParserUtil` and `Service` constraints, then adds the service via `Model#addService(...)`.
@@ -230,7 +230,7 @@ Step 2. The user executes `delete oi/5` command to delete the 5th owner in PetLo
 
 ![UndoRedoState1](images/UndoRedoState1.png)
 
-Step 3. The user executes `add on/David …​` to add a new owner. The `addowner` command also calls `Model#commitAddressBook()`, causing another modified PetLog state to be saved into the `addressBookStateList`.
+Step 3. The user executes `addowner on/David …​` to add a new owner. The `addowner` command also calls `Model#commitAddressBook()`, causing another modified PetLog state to be saved into the `addressBookStateList`.
 
 ![UndoRedoState2](images/UndoRedoState2.png)
 
@@ -238,7 +238,7 @@ Step 3. The user executes `add on/David …​` to add a new owner. The `addowne
 
 </div>
 
-Step 4. The user now decides that adding the person was a mistake, and decides to undo that action by executing the `undo` command. The `undo` command will call `Model#undoAddressBook()`, which will shift the `currentStatePointer` once to the left, pointing it to the previous PetLog state, and restores PetLog to that state.
+Step 4. The user now decides that adding the owner was a mistake, and decides to undo that action by executing the `undo` command. The `undo` command will call `Model#undoAddressBook()`, which will shift the `currentStatePointer` once to the left, pointing it to the previous PetLog state, and restores PetLog to that state.
 
 ![UndoRedoState3](images/UndoRedoState3.png)
 
@@ -269,7 +269,7 @@ Step 5. The user then decides to execute the command `list`. Commands that do no
 
 ![UndoRedoState4](images/UndoRedoState4.png)
 
-Step 6. The user executes `clear`, which calls `Model#commitAddressBook()`. Since the `currentStatePointer` is not pointing at the end of the `addressBookStateList`, all PetLog states after the `currentStatePointer` will be purged. Reason: It no longer makes sense to redo the `add on/David …​` command. This is the behaviour that most modern desktop applications follow.
+Step 6. The user executes `clear`, which calls `Model#commitAddressBook()`. Since the `currentStatePointer` is not pointing at the end of the `addressBookStateList`, all PetLog states after the `currentStatePointer` will be purged. Reason: It no longer makes sense to redo the `addowner on/David …​` command. This is the behaviour that most modern desktop applications follow.
 
 ![UndoRedoState5](images/UndoRedoState5.png)
 
@@ -313,7 +313,7 @@ The following activity diagram summarizes what happens when a user executes a ne
 * prefers desktop apps over mobile/web apps for operational work
 * can type fast and is comfortable with keyboard-driven workflows and prefixed command formats
 
-**Value proposition**: 
+**Value proposition**:
 
 * manage owners, pets, services, and sessions faster than typical mouse-driven workflows
 * schedule care sessions with optional services and automatically computed total fees
@@ -328,7 +328,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `* * *`  | pet day care manager | add a new owner                                                               | record new clients and their contact details                                         |
 | `* * *`  | pet day care manager | delete an owner                                                               | remove clients who no longer use my services                                         |
 | `* * *`  | pet day care manager | view all owners                                                               | see an overview of my client base                                                    |
-| `* * *`  | pet day care manager | add a new pet under an existing owner                                         | record the detaills of pets belonging to each owner                                  |
+| `* * *`  | pet day care manager | add a new pet under an existing owner                                         | record the details of pets belonging to each owner                                   |
 | `* * *`  | pet day care manager | delete a pet                                                                  | remove records of pets that no longer visit                                          |
 | `* * *`  | pet day care manager | view all pets                                                                 | see all pets currently registered in the system                                      |
 | `* * *`  | pet day care manager | view all pets belonging to a specific owner                                   | see all the pets of a client quickly during communication                            |
@@ -346,7 +346,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `* *`    | pet day care manager | update a pet's details                                                        | keep critical details accurate and up-to-date in case of emergencies                 |
 | `* *`    | pet day care manager | update a pet’s remarks                                                        | keep feeding instructions and special notes are accurate and up-to-date              |
 | `* *`    | pet day care manager | update a service's price                                                      | keep the price of my services up to date without having to delete and re-add them    |
-| `* *`    | pet day care manager | update a sessions's start/end time and services                               | keep the details of appointments up to date without having to delete and re-add them |
+| `* *`    | pet day care manager | update a session's start/end time and services                                | keep the details of appointments up to date without having to delete and re-add them |
 | `* *`    | pet day care manager | receive clear error messages for invalid commands                             | quickly correct mistakes without disrupting daily operations                         |
 | `* *`    | pet day care manager | filter using partial keywords                                                 | search for specific records quickly even if I don’t remember exact spellings         |
 | `*`      | pet day care manager | be warned before I delete an owner with existing pets                         | avoid accidentally losing linked pet and session records                             |
@@ -364,7 +364,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 1. User requests PetLog to do something with provided inputs.
 
 * 1a. PetLog detects that there are missing or invalid inputs (e.g. missing required prefixes, invalid index, inputs that are too long).
-  * 1a1. PetLog informs user of the missing or invalid inputs.
+  * 1a1. PetLog informs the user of the missing or invalid inputs.
 
 **Use case: UC01 - Add an owner**
 
@@ -372,7 +372,7 @@ MSS:
 
 1. User requests to add an owner with the provided relevant details.
 2. PetLog adds the owner into the owner list.
-3. PetLog informs user that the owner was added and shows the updated list of owners with the owner added.
+3. PetLog informs the user that the owner was added and shows the updated list of owners with the owner added.
 
     Use case ends.
 
@@ -385,10 +385,10 @@ Extensions:
 
 
 * 1b. PetLog detects that the provided phone number contains non-numerical characters.
-  * 1b1. PetLog notes this and will give a warning to user that the phone number contains non-numerical characters in step 3.
+  * 1b1. PetLog notes this and gives a warning to the user in step 3 that the phone number contains non-numerical characters.
 
     Use case resumes from step 2.
-	       
+
 **Use case: UC02 - Add a pet**
 
 Precondition: The owner to which the pet is to be added already exists.
@@ -397,26 +397,26 @@ MSS:
 
 1. User requests to add a pet with the provided relevant details to an owner.
 2. PetLog adds the pet to the specified owner.
-3. PetLog informs user that the pet was added and shows the updated list of pets with the pet added.
+3. PetLog informs the user that the pet was added and shows the updated list of pets with the pet added.
 
     Use case ends.
 
 Extensions:
 
-* 1a. PetLog detects the details match that of an existing pet of the same owner.
-    * 1a1. PetLog informs the user that the pet already exists for that owner.
+* 1a. PetLog detects that the details match an existing pet of the same owner.
+  * 1a1. PetLog informs the user that the pet already exists for that owner.
 
       Use case ends.
-	  
+
 **Use case: UC03 - Update a pet's remarks**
 
-Precondition: The pet which details are to be updated already exists.
+Precondition: The pet whose details are to be updated already exists.
 
 MSS:
 
 1. User requests to overwrite the remarks of a pet with the provided updated remarks.
 2. PetLog updates the remarks of the pet.
-3. PetLog informs user that the remarks have been updated and displays the updated pet with the new remarks.
+3. PetLog informs the user that the remarks have been updated and displays the updated pet with the new remarks.
 
     Use case ends.
 
@@ -428,7 +428,7 @@ MSS:
 
 1. User requests to delete an owner.
 2. PetLog deletes the owner.
-3. PetLog informs user that the deletion was successful and displays the new list of owners without the deleted owner.
+3. PetLog informs the user that the deletion was successful and displays the new list of owners without the deleted owner.
 
     Use case ends.
 
@@ -440,7 +440,7 @@ MSS:
 
 1. User requests to delete a pet.
 2. PetLog deletes the pet.
-3. PetLog informs user that the deletion was successful and displays the new list of pets without the deleted pet.
+3. PetLog informs the user that the deletion was successful and displays the new list of pets without the deleted pet.
 
     Use case ends.
 
@@ -452,14 +452,14 @@ MSS:
 
 1. User requests to search for owners by fields and keywords.
 2. PetLog finds matching owners.
-3. PetLog informs user of the number of matching owners and displays them.
+3. PetLog informs the user of the number of matching owners and displays them.
 
     Use case ends.
 
 Extensions:
-	  
+
 * 2a. PetLog does not find any owners with matching fields.
-  * 2b1. PetLog informs the user that there are 0 matching owners.
+  * 2a1. PetLog informs the user that there are 0 matching owners.
 
     Use case ends.
 
@@ -478,7 +478,7 @@ MSS:
 
 1. User requests to add a service with the provided name and price.
 2. PetLog adds the service into the service list.
-3. PetLog informs user that the service was added and displays the updated service catalogue.
+3. PetLog informs the user that the service was added and displays the updated service catalogue.
 
     Use case ends.
 
@@ -491,33 +491,33 @@ Extensions:
 
 **Use case: UC09 - Add a session with no services**
 
-Precondition: The pet which the session is to be added for already exists.
+Precondition: The pet for which the session is to be added already exists.
 
 MSS:
 
 1. User requests to add a session to a specified pet, with the provided start and end times.
 2. PetLog adds the session to the specified pet.
 3. PetLog computes the total fee for the session.
-4. PetLog informs user that the session was added and displays the updated list of sessions with the session added.
+4. PetLog informs the user that the session was added and displays the updated list of sessions with the session added.
 
     Use case ends.
 
 Extensions:
 
 * 1a. PetLog detects that the end time is not chronologically after the start time.
-  * 1a1. PetLog informs user that end time of a session must be after its start time.
+  * 1a1. PetLog informs the user that the end time of a session must be after its start time.
 
     Use case ends.
 
 
 * 1b. PetLog detects that the session being added overlaps with an existing session for the specified pet.
-  * 1b1. PetLog informs user that the specified pet has an existing overlapping session.
+  * 1b1. PetLog informs the user that the specified pet has an existing overlapping session.
 
     Use case ends.
 
 **Use case: UC10 - Add a session with services**
 
-Precondition: The pet which the session is to be added for already exists, and the services to be added to the session already exist.
+Precondition: The pet for which the session is to be added already exists, and the services to be added to the session already exist.
 
 MSS:
 
@@ -536,7 +536,7 @@ MSS:
 
 1. User requests to delete a specified session.
 2. PetLog deletes the specified session.
-3. PetLog informs user that the deletion was successful and displays the new list of sessions without the deleted session.
+3. PetLog informs the user that the deletion was successful and displays the new list of sessions without the deleted session.
 
     Use case ends.
 
@@ -548,7 +548,7 @@ MSS:
 
 1. User requests to delete a specified service.
 2. PetLog deletes the specified service.
-3. PetLog informs user that the deletion was successful and displays the new list of services without the deleted service.
+3. PetLog informs the user that the deletion was successful and displays the new list of services without the deleted service.
 
     Use case ends.
 
@@ -560,7 +560,7 @@ MSS:
 
 1. User requests to edit the provided fields of the specified owner.
 2. PetLog overwrites the fields of the owner with the provided inputs.
-3. PetLog informs user that the edit was successful and displays the updated list of owners with the updated owner.
+3. PetLog informs the user that the edit was successful and displays the updated list of owners with the updated owner.
 
    Use case ends.
 
@@ -570,7 +570,7 @@ MSS:
 
 1. User requests to clear all records (owners, pets, services, sessions).
 2. PetLog deletes all records.
-3. PetLog informs user that the deletion was successful and displays the updated blank lists.
+3. PetLog informs the user that the deletion was successful and displays the updated blank lists.
 
    Use case ends.
 
@@ -579,8 +579,8 @@ MSS:
 MSS:
 
 1. User requests for help with commands.
-2. PetLog displays a list of all available commands and their formats, and provides user with a link to the user guide.
-3. PetLog informs user that the help was provided successfully.
+2. PetLog displays a list of all available commands and their formats, and provides the user with a link to the user guide.
+3. PetLog informs the user that the help was provided successfully.
 
    Use case ends.
 
@@ -591,13 +591,13 @@ Precondition: The owner to be searched for already exists.
 MSS:
 
 1. User <u>searches for the specified owner (UC06)</u>.
-2. User <u>adds a pet to the owner (UC02)</u> / <u>deletes the owner (UC04)</u> / <u>edits the owner (UC13)</u> / etc with the updated index of the owner displayed from step 1.
-    
+2. User <u>adds a pet to the owner (UC02)</u> / <u>deletes the owner (UC04)</u> / <u>edits the owner (UC13)</u> / etc., using the updated owner index displayed in step 1.
+
     Use case ends.
 
 **Use case: UC17 - Adjust the price of a service**
 
-Precondition: The service which price is to be adjusted already exists.
+Precondition: The service whose price is to be adjusted already exists.
 
 MSS:
 
@@ -617,7 +617,7 @@ MSS:
 
     Use case ends.
 
-**Use case: UC19 - Adjust the price of a service and recompute the fee of a sessions using that service**
+**Use case: UC19 - Adjust the price of a service and recompute the fee of a session using that service**
 
 Preconditions: The session and service already exist, the session uses the service.
 
@@ -660,7 +660,7 @@ MSS:
 
 **Reliability and Data Integrity**
 * When exiting PetLog via the `exit` command, 100% of data should persist across the app restarts.
-* The data should be stored locally and should be in a human editable text file.
+* The data should be stored locally and should be in a human-editable text file.
 * The data should not be stored in a database management system.
 * On file load, invalid/corrupted data should be detected and reported to the user without PetLog crashing.
 * PetLog should have a crash-free session rate of ≥ 99.9% in pre-release Quality Assurance runs.
@@ -677,7 +677,7 @@ MSS:
 * PetLog should not use any vulgar/offensive language.
 
 **Project Process**
-* Petlog should be developed in a breadth-first incremental manner over the project duration.
+* PetLog should be developed in a breadth-first incremental manner over the project duration.
 * PetLog's implementation is expected to adhere to a schedule that dynamically shifts and is agreed upon by the majority of members.
 * PetLog's codebase should only use third-party frameworks/libraries/services if they are free, open-source, and have permissive license terms, and do not require any installation by the user.
 * PetLog should be packaged in a single JAR file.
@@ -698,7 +698,7 @@ MSS:
 * **Fee** - The monetary total for a session, computed from selected services at session creation.
 * **CLI** - Command Line Interface; a text-based interface where users interact by typing commands.
 * **GUI** - Graphical User Interface; the visual interface displayed to the user.
-* **Mainstream OS** - Windows, Linux, Unix, MacOS.
+* **Mainstream OS** - Windows, Linux, Unix, macOS.
 * **Home folder** - The directory where the JAR runs and where PetLog stores `data/petlog.json`.
 
 --------------------------------------------------------------------------------------------------------------------
@@ -825,7 +825,7 @@ It aims to complement the UG by suggesting a simple path for testing and providi
 
 ### Handling corrupted data
 
-1. Positive test: Missing/corrupted data file handling
+1. Robustness test: Missing/corrupted data file handling
 
    1. Close the app and open `data/petlog.json`.
 
