@@ -25,22 +25,22 @@ It helps you manage owners, pets, services, and sessions quickly with structured
    A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
    ![Ui](images/Ui.png)
 
-1. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the help window.<br>
+1. Type the command in the command box and press Enter to execute it. e.g. typing **[`help`](#viewing-help-help)** and pressing Enter will open the help window.<br>
    Some example commands you can try:
 
-   * `list` : Lists all owners and pets.
+   * [`list`](#listing-all-owners--list) : Lists all owners and pets.
 
-   * `addowner on/John Doe ph/98765432 em/johnd@example.com ad/John street, block 123, #01-01` : Adds an owner.
+   * [`addowner on/John Doe ph/98765432 em/johnd@example.com ad/John street, block 123, #01-01`](#adding-an-owner-addowner) : Adds an owner.
 
-   * `addpet oi/1 pn/Molly ps/Golden Retriever pr/cuddly` : Adds a pet under owner index `1`.
+   * [`addpet oi/1 pn/Molly ps/Golden Retriever pr/cuddly`](#adding-a-pet-under-an-owner-addpet) : Adds a pet under owner index `1`.
 
-   * `addservice sn/Nail trim sp/10.00` : Adds a new available service.
+   * [`addservice sn/Nail trim sp/10.00`](#adding-a-service-addservice) : Adds a new available service.
 
-   * `addsession oi/1 pi/1 st/2026-04-06 10:00 et/2026-04-06 11:00 sn/Nail trim` : Adds a session for a pet.
+   * [`addsession oi/1 pi/1 st/2026-04-06 10:00 et/2026-04-06 11:00 sn/Nail trim`](#adding-a-session-addsession) : Adds a session for a pet.
 
-   * `clear` : Clears all owners, pets, services, and sessions.
+   * [`clear`](#clearing-all-owners-pets-services-and-sessions-clear) : Clears all owners, pets, services, and sessions.
 
-   * `exit` : Exits the app.
+   * [`exit`](#exiting-the-program-exit) : Exits the app.
 
 1. Refer to the [Features](#features) below for details of each command.
 
@@ -73,7 +73,7 @@ It helps you manage owners, pets, services, and sessions quickly with structured
 * If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
 </div>
 
-### Viewing help : `help`
+### Viewing help: `help`
 
 Shows a message explaining how to access the help page:
 
@@ -98,7 +98,7 @@ Examples:
 * `addowner on/John Doe ph/98765432 em/johnd@example.com ad/John street, block 123, #01-01`
 * `addowner on/Betsy Crowe ot/friend em/betsycrowe@example.com ad/Newgate Prison ph/1234567 ot/criminal`
 
-### Editing an owner : `editowner`
+### Editing an owner: `editowner`
 
 Edits an existing owner in PetLog.
 
@@ -165,7 +165,7 @@ Examples:
 * `find ad/Tampines ot/VIP` returns owners whose address contains `Tampines` OR who are tagged as `VIP`s _(screenshot cropped to show relevant UI elements)_:
 ![[result for 'find ad/Tampines ot/VIP']](images/findAdTampinesOtVip.png)
 
-### Listing all owners : `list`
+### Listing all owners: `list`
 
 Shows a list of all owners and pets in PetLog.
 
@@ -175,7 +175,7 @@ Format: `list`
 Use `list` after using `find` to go back to displaying all owners and pets.
 </div>
 
-### Adding a service : `addservice`
+### Adding a service: `addservice`
 
 Adds a service to the service catalogue. A service has a name and a price.
 
@@ -188,7 +188,7 @@ Format: `addservice sn/SERVICE_NAME sp/SERVICE_PRICE`
 Examples:
 * `addservice sn/Ear Cleaning sp/12.50` adds Ear Cleaning as a service to the list with the price of $12.50.
 
-### Adding a session : `addsession`
+### Adding a session: `addsession`
 
 Adds a session for the specified pet. A session has a pet, a start time, an end time, and a list of services, from which the fee is calculated.
 
@@ -204,7 +204,7 @@ Format: `addsession oi/OWNER_INDEX pi/PET_INDEX st/START_TIME et/END_TIME [sn/SE
 Examples:
 * `addsession oi/1 pi/2 st/2026-05-15 14:30 et/2026-05-15 15:30 sn/Base service charge sn/Shampoo` adds a session for the 2nd pet listed under the 1st owner; it is from 2:30pm to 3:30pm on 15 May 2026; its list of services are `Base service charge` and `Shampoo`.
 
-### Deleting an owner, pet, session or service : `delete`
+### Deleting an owner, pet, session or service: `delete`
 
 `delete` has two usages with their own respective formats.
 
@@ -239,7 +239,7 @@ Format: `delete sn/SERVICE_NAME`
 Examples:
 * `delete sn/Ear Cleaning` deletes Ear Cleaning as a service from the list (if it exists).
 
-### Clearing all owners, pets, services and sessions : `clear`
+### Clearing all owners, pets, services and sessions: `clear`
 
 Deletes all owners, pets, services and sessions from PetLog.
 
@@ -249,7 +249,7 @@ Format: `clear`
 Use `clear` to remove the sample data when you first run PetLog so you can start putting in your own! 
 </div>
 
-### Exiting the program : `exit`
+### Exiting the program: `exit`
 
 Exits PetLog.
 
