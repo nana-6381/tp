@@ -16,8 +16,8 @@ import seedu.address.commons.core.LogsCenter;
 public class HelpWindow extends UiPart<Stage> {
 
     public static final String USERGUIDE_URL = "https://ay2526s2-cs2103t-w14-1.github.io/tp/UserGuide.html";
-    public static final String HELP_MESSAGE = "Refer to the user guide: " + USERGUIDE_URL;
-    public static final String COMMANDS_MESSAGE = "Available Commands:\n\n"
+    public static final String HELP_MESSAGE = "For more detailed guide, refer to the user guide: " + USERGUIDE_URL;
+    public static final String COMMANDS_MESSAGE = "Available Commands:\n"
             + "• help\n"
             + "• addowner on/OWNER_NAME ph/PHONE_NUMBER em/EMAIL ad/ADDRESS [ot/TAG]...\n"
             + "• editowner oi/OWNER_INDEX [on/OWNER_NAME] [ph/PHONE_NUMBER] [em/EMAIL] [ad/ADDRESS]"

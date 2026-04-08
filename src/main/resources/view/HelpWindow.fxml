@@ -11,6 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.stage.Stage?>
 
+<?import javafx.scene.control.Separator?>
 <fx:root resizable="true" title="Help" type="javafx.stage.Stage"
          minWidth="500" minHeight="400"
          xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
@@ -31,6 +32,8 @@
             </padding>
           </Label>
         </ScrollPane>
+
+        <Separator />
 
         <HBox id="helpMessageContainer" alignment="CENTER_LEFT" spacing="10">
           <padding>
