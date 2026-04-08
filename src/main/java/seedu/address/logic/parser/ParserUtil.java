@@ -175,6 +175,19 @@ public class ParserUtil {
         return parseValidatedString(dateTime, Session::isValidDateTime, Session.MESSAGE_DATETIME_CONSTRAINTS);
     }
 
+    /**
+     * Returns true if all specified prefixes are present in {@code argumentMultimap}.
+     */
+    public static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
+        requireNonNull(argumentMultimap);
+        for (Prefix prefix : prefixes) {
+            if (argumentMultimap.getValue(prefix).isEmpty()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     private static String parseValidatedString(String rawValue, Predicate<String> validator, String errorMessage)
             throws ParseException {
         requireNonNull(rawValue);

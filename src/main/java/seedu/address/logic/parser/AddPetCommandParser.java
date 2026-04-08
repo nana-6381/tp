@@ -7,8 +7,6 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_PET_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PET_REMARK;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_SPECIES;
 
-import java.util.stream.Stream;
-
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.AddPetCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -36,7 +34,7 @@ public class AddPetCommandParser implements Parser<AddPetCommand> {
                 ArgumentTokenizer.tokenize(args, PREFIX_OWNER_INDEX,
                         PREFIX_PET_NAME, PREFIX_SPECIES, PREFIX_PET_REMARK);
 
-        if (!arePrefixesPresent(argMultimap, PREFIX_OWNER_INDEX, PREFIX_PET_NAME, PREFIX_SPECIES)
+        if (!ParserUtil.arePrefixesPresent(argMultimap, PREFIX_OWNER_INDEX, PREFIX_PET_NAME, PREFIX_SPECIES)
                 || !argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddPetCommand.MESSAGE_USAGE));
         }
@@ -47,7 +45,7 @@ public class AddPetCommandParser implements Parser<AddPetCommand> {
         PetName petName = ParserUtil.parsePetName(argMultimap.getValue(PREFIX_PET_NAME).get());
         Species species = ParserUtil.parseSpecies(argMultimap.getValue(PREFIX_SPECIES).get());
         PetRemark petRemark = new PetRemark("");
-        if (arePrefixesPresent(argMultimap, PREFIX_PET_REMARK)) {
+        if (ParserUtil.arePrefixesPresent(argMultimap, PREFIX_PET_REMARK)) {
             String normalizedRemark = normalizeWhitespace(argMultimap.getValue(PREFIX_PET_REMARK).get());
             if (!isValidAddPetRemark(normalizedRemark)) {
                 throw new ParseException(MESSAGE_PET_REMARK_CONSTRAINTS);
@@ -56,14 +54,6 @@ public class AddPetCommandParser implements Parser<AddPetCommand> {
         }
         Pet newPet = new Pet(petName, species, petRemark);
         return new AddPetCommand(ownerIndex, newPet);
-    }
-
-    /**
-     * Returns true if none of the prefixes contains empty {@code Optional} values in the given
-     * {@code ArgumentMultimap}.
-     */
-    private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
-        return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
     }
 
     private static boolean isValidAddPetRemark(String remark) {
