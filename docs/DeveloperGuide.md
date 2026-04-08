@@ -71,7 +71,7 @@ The sections below give more details of each component.
 
 The **API** of this component is specified in [`Ui.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/ui/Ui.java)
 
-![Structure of the UI Component](images/UiClassDiagram.png)
+<img src="images/UiClassDiagram.png" width="600"/>
 
 The UI consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `OwnerListPanel`, `PetListPanel`, `SessionListPanel`, `ServiceListPanel`, `StatusBarFooter` etc. All these, including the `MainWindow`, inherit from the abstract `UiPart` class which captures the commonalities between classes that represent parts of the visible GUI.
 
@@ -109,7 +109,7 @@ How the `Logic` component works:
 
 Here are the other classes in `Logic` (omitted from the class diagram above) that are used for parsing a user command:
 
-<img src="images/ParserClasses.png" width="600"/>
+<img src="images/ParserClasses.png" width="800"/>
 
 How the parsing works:
 * When called upon to parse a user command, the `AddressBookParser` class creates an `XYZCommandParser` (`XYZ` is a placeholder for the specific command name e.g., `AddOwnerCommandParser`) which uses the other classes shown above to parse the user command and create a `XYZCommand` object (e.g., `AddOwnerCommand`) which the `AddressBookParser` returns back as a `Command` object.
@@ -119,8 +119,11 @@ How the parsing works:
 
 **API** : [`Model.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/model/Model.java)
 
-<img src="images/ModelClassDiagram.png" width="650" />
+<img src="images/ModelClassDiagram.png" width="800" />
 
+<div markdown="span" class="alert alert-info">:information_source: **Note:** Owner and pet fields (e.g. `Address`, `Species`) have been omitted from the diagram.
+
+</div>
 
 The `Model` component,
 
@@ -143,7 +146,7 @@ The `Model` component,
 
 **API** : [`Storage.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/storage/Storage.java)
 
-<img src="images/StorageClassDiagram.png" width="550" />
+<img src="images/StorageClassDiagram.png" width="700" />
 
 The `Storage` component,
 * exposes a unified `Storage` API that extends both `AddressBookStorage` and `UserPrefsStorage`.
@@ -549,7 +552,7 @@ MSS:
 
     Use case ends.
 
-**Use case: UC12 - Editing an owner's details**
+**Use case: UC13 - Editing an owner's details**
 
 Precondition: The owner whose details are to be edited already exists.
 
@@ -561,7 +564,7 @@ MSS:
 
    Use case ends.
 
-**Use case: UC13 - Clear all records**
+**Use case: UC14 - Clear all records**
 
 MSS:
 
@@ -571,7 +574,7 @@ MSS:
 
    Use case ends.
 
-**Use case: UC14 - Get help with commands**
+**Use case: UC15 - Get help with commands**
 
 MSS:
 
@@ -581,36 +584,36 @@ MSS:
 
    Use case ends.
 
-**Use case: UC15 - Searching for an owner to add a pet to / delete / edit / etc**
+**Use case: UC16 - Searching for an owner to add a pet to / delete / edit / etc**
 
 Precondition: The owner to be searched for already exists.
 
 MSS:
 
 1. User <u>searches for the specified owner (UC06)</u>.
-2. User <u>adds a pet to the owner (UC02)</u> / <u>deletes the owner (UC04)</u> / <u>edits the owner (UC12)</u> / etc with the updated index of the owner displayed from step 1.
+2. User <u>adds a pet to the owner (UC02)</u> / <u>deletes the owner (UC04)</u> / <u>edits the owner (UC13)</u> / etc with the updated index of the owner displayed from step 1.
     
     Use case ends.
 
-**Use case: UC16 - Adjust the price of a service**
+**Use case: UC17 - Adjust the price of a service**
 
 Precondition: The service which price is to be adjusted already exists.
 
 MSS:
 
-1. User <u>deletes the service (UC11)</u>.
-2. User <u>adds a session (UC10)</u> with the same name and adjusted price.
+1. User <u>deletes the service (UC12)</u>.
+2. User <u>adds a service (UC08)</u> with the same name and adjusted price.
 
     Use case ends.
 
-**Use case: UC17 - Change the timing or services of a session**
+**Use case: UC18 - Change the timing / services of a session**
 
 Precondition: The session to be changed already exists.
 
 MSS:
 
-1. User <u>deletes the session (UC10)</u>.
-2. User <u>adds a session (UC09)</u> with the changed timings or services.
+1. User <u>deletes the session (UC11)</u>.
+2. User <u>adds a session (UC09 or UC10)</u> with the changed timing / services.
 
     Use case ends.
 
@@ -620,9 +623,9 @@ Preconditions: The session and service already exist, the session uses the servi
 
 MSS:
 
-1. User <u>adjusts the price of the service (UC16)</u>.
-2. User <u>deletes the session (UC10)</u>.
-3. User <u>adds a session (UC09)</u> with the same name, time and services.
+1. User <u>adjusts the price of the service (UC17)</u>.
+2. User <u>deletes the session (UC11)</u>.
+3. User <u>adds a session (UC10)</u> with the same name, time and services.
 
     Use case ends.
 
