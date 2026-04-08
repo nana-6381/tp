@@ -14,7 +14,7 @@ It helps you manage owners, pets, services, and sessions quickly with structured
 
 ## Quick start
 
-1. Ensure you have Java `17` or above installed in your computer.<br>
+1. Ensure you have Java `17` or above installed on your computer.<br>
    **Mac users:** Ensure you have the precise JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationMac.html).
 
 1. Download the latest `petlog.jar` file from the [releases page](https://github.com/AY2526S2-CS2103T-W14-1/tp/releases).
@@ -22,7 +22,7 @@ It helps you manage owners, pets, services, and sessions quickly with structured
 1. Copy the file to the folder you want to use as the _home folder_ for PetLog.
 
 1. Open a command terminal, `cd` into the folder you put the jar file in, and run `java -jar petlog.jar`.<br>
-   A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
+   A GUI similar to the one below should appear in a few seconds. Note how the app contains some sample data.<br>
    ![Ui](images/Ui.png)
 
 1. Type the command in the command box and press Enter to execute it. e.g. typing [`help`](#viewing-help-help) and pressing Enter will open the help window.<br>
@@ -53,7 +53,7 @@ It helps you manage owners, pets, services, and sessions quickly with structured
 **:information_source: Notes about the command format:**<br>
 
 * Words in `UPPER_CASE` are the parameters to be supplied by the user.<br>
-  e.g. in [`addowner on/OWNER_NAME`](#adding-an-owner-addowner) , `OWNER_NAME` is a parameter which can be used as [`addowner on/John Doe`](#adding-an-owner-addowner).
+  e.g. in [`addowner on/OWNER_NAME`](#adding-an-owner-addowner), `OWNER_NAME` is a parameter which can be used as [`addowner on/John Doe`](#adding-an-owner-addowner).
 
 * Items in square brackets are optional.<br>
   e.g. `on/OWNER_NAME [ot/TAG]` can be used as `on/John Doe ot/priority` or as `on/John Doe`.
@@ -68,7 +68,7 @@ It helps you manage owners, pets, services, and sessions quickly with structured
   e.g. [`AdDoWnEr on/John Doe Ph/98765432 eM/j@example.com AD/123, Street`](#adding-an-owner-addowner) is accepted.
 
 * Extraneous parameters for commands that do not take in parameters (such as [`help`](#viewing-help-help), [`list`](#listing-all-owners-list), [`exit`](#exiting-the-program-exit) and [`clear`](#clearing-all-owners-pets-services-and-sessions-clear)) will be ignored.<br>
-  e.g. if the command specifies [`help 123`](#listing-all-owners-list), it will be interpreted as [`help`](#listing-all-owners-list).
+  e.g. if the command specifies [`help 123`](#viewing-help-help), it will be interpreted as [`help`](#viewing-help-help).
 
 * If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
 </div>
@@ -199,7 +199,7 @@ Format: `addsession oi/OWNER_INDEX pi/PET_INDEX st/START_TIME et/END_TIME [sn/SE
 * `START_TIME` and `END_TIME` must be of the format `yyyy-MM-dd HH:mm`.
 * `END_TIME` must be chronologically after `START_TIME`.
 * `SERVICE_NAME`, if provided, must match an existing service in the service catalogue.
-* Attempting to add a session which timing overlaps with an existing session for the specified pet will not succeed.
+* Attempting to add a session whose timing overlaps with an existing session for the specified pet will not succeed.
 
 Examples:
 * `addsession oi/1 pi/2 st/2026-05-15 14:30 et/2026-05-15 15:30 sn/Base service charge sn/Shampoo` adds a session for the 2nd pet listed under the 1st owner; it is from 2:30pm to 3:30pm on 15 May 2026; its list of services are `Base service charge` and `Shampoo`.
@@ -255,7 +255,7 @@ Deletes all owners, pets, services and sessions from PetLog.
 Format: `clear`
 
 <div markdown="span" class="alert alert-primary">:bulb: **Tip:**
-Use `clear` to remove the sample data when you first run PetLog so you can start putting in your own! 
+Use `clear` to remove the sample data when you first run PetLog so you can start putting in your own!
 </div>
 
 ### Exiting the program: `exit`
@@ -273,8 +273,8 @@ PetLog data is saved in the hard disk automatically after any command that chang
 PetLog data is saved automatically as a JSON file `[JAR file location]/data/petlog.json`. Advanced users are welcome to update data directly by editing that data file.
 
 <div markdown="span" class="alert alert-warning">:exclamation: **Caution:**
-If your changes to the data file makes its format invalid, PetLog will discard all data and start with an empty data file at the next run. Hence, it is recommended to take a backup of the file before editing it.<br>
-Furthermore, certain edits can cause the PetLog to behave in unexpected ways (e.g., if a value entered is outside of the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
+If your changes to the data file make its format invalid, PetLog will discard all data and start with an empty data file at the next run. Hence, it is recommended to take a backup of the file before editing it.<br>
+Furthermore, certain edits can cause PetLog to behave in unexpected ways (e.g., if a value entered is outside of the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
 </div>
 
 ### Undo/Redo `[Coming Soon]`
@@ -286,7 +286,7 @@ _Details coming soon ..._
 ## FAQ
 
 **Q**: How do I transfer my PetLog data to another computer?<br>
-**A**: Install PetLog in the other computer, and overwrite the empty data file it creates with the file that contains the data of your previous PetLog home folder.
+**A**: Install PetLog on the other computer, and overwrite the empty data file it creates with the file that contains the data from your previous PetLog home folder.
 
 **Q**: Why do indexes become invalid after I run [`find`](#searching-for-owners-find)?<br>
 **A**: Indexes always refer to the current displayed list. After filtering, either use the new filtered indexes or run [`list`](#listing-all-owners-list) to reset the indexes, before deleting/updating.
@@ -312,7 +312,7 @@ _Details coming soon ..._
 
 1. **When using multiple screens**, if you move the application to a secondary screen, and later switch to using only the primary screen, the GUI will open off-screen. The remedy is to delete the `preferences.json` file created by the application before running the application again.
 
-1. **If you minimize the Help Window** and then run the [`help`](#viewing-help-help) command (or use the `Help` menu, or the keyboard shortcut `F1`) again, the original Help Window will remain minimized, and no new Help Window will appear. The remedy is to manually restore the minimized Help Window.
+1. **If you minimise the Help Window** and then run the [`help`](#viewing-help-help) command (or use the `Help` menu, or the keyboard shortcut `F1`) again, the original Help Window will remain minimised, and no new Help Window will appear. The remedy is to manually restore the minimised Help Window.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -325,7 +325,7 @@ Action | Format, Examples
 [**Edit Owner**](#editing-an-owner-editowner) | `editowner oi/OWNER_INDEX [on/OWNER_NAME] [ph/PHONE_NUMBER] [em/EMAIL] [ad/ADDRESS] [ot/OVERWRITE_TAG]…​ [at/ADD_TAG]…​ [rt/REMOVE_TAG]…​`<br> e.g., `editowner oi/1 ph/91234567 em/johndoe@example.com`
 [**Add Pet**](#adding-a-pet-under-an-owner-addpet) | `addpet oi/OWNER_INDEX pn/PET_NAME ps/SPECIES [pr/REMARKS]` <br> e.g., `addpet oi/2 pn/Molly ps/Golden Retriever pr/cuddly`
 [**Update Pet Remarks**](#updating-the-remarks-of-a-pet-update) | `update oi/OWNER_INDEX pi/PET_INDEX pr/REMARKS` <br> e.g., `update oi/1 pi/3 pr/aggressive`
-[**Search for Owner**](#searching-for-owners-find) | `find [on/OWNER_NAME] [ph/PHONE_NUMBER] [em/EMAIL] [ad/ADDRESS] [ot/OWNER_TAG]…​ [oi/OWNER_INDEX] [pn/PET_NAME] [ps/SPECIES] [pr/REMARKS]`<br> e.g., `find on/Hans ps/Dog`
+[**Search for Owners**](#searching-for-owners-find) | `find [on/OWNER_NAME] [ph/PHONE_NUMBER] [em/EMAIL] [ad/ADDRESS] [ot/OWNER_TAG]…​ [oi/OWNER_INDEX] [pn/PET_NAME] [ps/SPECIES] [pr/REMARKS]`<br> e.g., `find on/Hans ps/Dog`
 [**List All Owners and Pets**](#listing-all-owners-list) | `list`
 [**Add Service**](#adding-a-service-addservice) | `addservice sn/SERVICE_NAME sp/SERVICE_PRICE` <br> e.g., `addservice sn/Ear Cleaning sp/12.50`
 [**Add Session**](#adding-a-session-addsession) | `addsession oi/OWNER_INDEX pi/PET_INDEX st/START_TIME et/END_TIME [sn/SERVICE_NAME]…​` <br> e.g., `addsession oi/1 pi/2 st/2026-05-15 14:30 et/2026-05-15 15:30 sn/Base service charge sn/Shampoo`
