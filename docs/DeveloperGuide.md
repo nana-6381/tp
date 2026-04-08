@@ -704,228 +704,143 @@ MSS:
 
 Given below are instructions to test the app manually.
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** These instructions only provide a starting point for testers to work on;
-testers are expected to do more *exploratory* testing.
-
+<div markdown="span" class="alert alert-info">:information_source: **Note:** This appendix is intended as a guided starting point for manual exploratory testing.
+It aims to complement the UG by suggesting a simple path for testing and providing test inputs that can be copy-pasted. It is not a comprehensive list of tests.
 </div>
 
 ### Launch and shutdown
 
 1. Initial launch
 
-   1. Download the jar file and copy into an empty folder
+    1. Download the jar file and copy it into an empty folder.
 
-   1. Double-click the jar file. <br>
-      Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
+    1. From your terminal, `cd` into the folder and run PetLog with `java -jar petlog.jar`. <br>
+       Expected: GUI opens with sample data.
 
-1. Saving window preferences
+1. Help and window preference retention
 
-   1. Resize the window to an optimum size. Move the window to a different location. Close the window.
+    1. Test case: `help`<br>
+       Expected: Help window appears.
 
-   1. Re-launch the app by double-clicking the jar file.<br>
-      Expected: The most recent window size and location is retained.
+    1. Resize the app window and move it to a different location. Close and relaunch the app.<br>
+       Expected: Most recent window size and location are retained.
 
-### Adding an owner
+### Owner flow (`addowner`, `find`, `editowner`)
 
-1. Adding an owner
+1. Positive tests: Add, search, and edit one owner
 
-   1. Prerequisites: App is launched with sample data (contains owner `Alex Yeoh`).
+   1. Test inputs (copy-paste one by one):
+      ```text
+      addowner on/Manual Tester ph/81234567 em/manual.tester@example.com ad/123 Test Avenue, #01-02 ot/vip
+      find on/Manual Tester
+      editowner oi/1 ph/87654321 at/premium rt/vip
+      find on/Manual Tester
+      ```
+      Expected: owner is added, filtered, edited, and still searchable.
 
-   1. Test case: `addowner on/Jane Tan ph/81234567 em/jane.tan@gmail.com ad/12 Tampines Street 11, #03-55 ot/vip`<br>
-      Expected: A new owner is added and shown in the owner list.
+1. Negative test
 
-   1. Test case: `addowner on/Jane_#VIP! ph/81234568 em/jane.vip@gmail.com ad/13 Tampines Street 12, #03-56`<br>
-      Expected: A new owner is added and shown in the owner list.
+   1. Test case: `addowner on/Manual Tester ph/87654321 em/dup@example.com ad/1 Duplicate Road`<br>
+      Expected: duplicate owner is rejected.
 
-   1. Test case: `addowner on/Jane Tan ph/8123-4567 em/jane.alt@gmail.com ad/14 Tampines Street 13, #03-57`<br>
-      Expected: A new owner is added and a warning is shown because the phone contains non-numeric characters.
+### Pet flow (`addpet`, `update`, `find`)
 
-   1. Test case: `addowner on/Jane Tan ph/81234567 em/jane.special@gmail.com ad/Unit #05-01 @ Pet-Hub / Block A`<br>
-      Expected: A new owner is added and shown in the owner list.
+1. Positive tests: Add and update a pet
 
-   1. Test case: `addowner on/Jane Tan ph/81234567 em/jane.tags@gmail.com ad/15 Tampines Street 14, #03-58 ot/#VIP-Prime!`<br>
-      Expected: A new owner is added and shown in the owner list.
+   1. Prerequisites: `find on/Manual Tester` shows this owner at `oi/1`.
 
-   1. Test case: `addowner on/Alex Yeoh ph/99998888 em/alex.new@example.com ad/1 New Address`<br>
-      Expected: Command fails with `Owner already exists.`
+   1. Test inputs:
+      ```text
+      addpet oi/1 pn/Pixel ps/Cat pr/Needs quiet handling
+      update oi/1 pi/1 pr/Needs quiet handling and short breaks
+      find pn/Pixel
+      ```
+      Expected: pet is added under the owner, remark updates, and owner is returned by pet search.
 
-   1. Test case: `addowner on/Jane Tan ph/81234567 em/jane.tan@gmail.com`<br>
-      Expected: Command fails due to invalid format (missing required `ad/` prefix).
+1. Negative tests
 
-   1. Test case: `addowner on/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA ph/81234567 em/jane.tan@gmail.com ad/12 Tampines Street 11, #03-55`<br>
-      Expected: Command fails with owner name validation error (owner name must be 1 to 50 characters).
+   1. Test case: `addpet oi/1 pn/Pixel ps/Cat`<br>
+      Expected: duplicate pet for same owner is rejected.
 
-   1. Test case: `addowner on/Jane Tan ph/1 em/jane.tan@gmail.com ad/12 Tampines Street 11, #03-55`<br>
-      Expected: Command fails with phone validation error (phone number must be 2 to 30 characters).
+   1. Test case: `update oi/1 pi/99 pr/invalid index check`<br>
+      Expected: invalid pet index is rejected.
 
-   1. Test case: `addowner on/Jane Tan ph/81234567 em/jane.tan@gmail.com ad/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA`<br>
-      Expected: Command fails with address validation error (address must be 1 to 100 characters).
+### Service and session flow (`addservice`, `addsession`)
 
-   1. Test case: `addowner on/Jane Tan ph/81234567 em/jane.tan@gmail.com ad/12 Tampines Street 11, #03-55 ot/AAAAAAAAAAAAAAAAAAAAA`<br>
-      Expected: Command fails with tag validation error (tag must be 1 to 20 characters).
+1. Positive tests: Add services and create a session
 
-### Adding a pet
+   1. Prerequisites: `find on/Manual Tester` shows this owner at `oi/1` with `Pixel` at `pi/1`.
 
-1. Adding a pet to an existing owner
+   1. Test inputs:
+      ```text
+      addservice sn/Test Grooming sp/25.00
+      addservice sn/Test Nail Trim sp/12.50
+      addsession oi/1 pi/1 st/2026-06-01 10:00 et/2026-06-01 11:30 sn/Test Grooming sn/Test Nail Trim
+      ```
+      Expected: services appear in service panel; session appears in session panel with computed fee.
 
-   1. Prerequisites: App is launched with sample data (contains owner `Alex Yeoh` at owner index 1).
+1. Negative tests
 
-   1. Test case: `addpet oi/1 pn/Milo ps/Cat pr/Needs medication after meals`<br>
-      Expected: A new pet named `Milo` is added under `Alex Yeoh` and shown in the pet list for that owner.
+   1. Test case: `addservice sn/Test Grooming sp/30.00`<br>
+      Expected: duplicate service is rejected.
 
-   1. Test case: `addpet oi/1 pn/@Milo! ps/Cat`<br>
-      Expected: Command succeeds. A new pet named `@Milo!` is added under `Alex Yeoh`.
+   1. Test case: `addsession oi/1 pi/1 st/2026-06-01 11:00 et/2026-06-01 12:00`<br>
+      Expected: overlapping session is rejected.
 
-   1. Test case: `addpet oi/1 pn/Milo ps/D0g-@Home`<br>
-      Expected: Command succeeds. A new pet with species `D0g-@Home` is added under `Alex Yeoh`.
-
-   1. Test case: `addpet oi/1 pn/Buddy ps/Dog pr/Very energetic`<br>
-      Expected: Command fails with `This person already has this pet.`
-
-   1. Test case: `addpet oi/999 pn/Milo ps/Cat pr/Friendly`<br>
-      Expected: Command fails because the owner index is invalid.
-
-   1. Test case: `addpet oi/1 pn/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA ps/Cat`<br>
-      Expected: Command fails with pet name validation error (`Pet name must be 1 to 30 characters.`).
-
-   1. Test case: `addpet oi/1 pn/Milo ps/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA`<br>
-      Expected: Command fails with species validation error (`Species must be 1 to 30 characters.`).
-
-   1. Test case: `addpet oi/1 pn/Milo ps/Cat pr/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA`<br>
-      Expected: Command fails with remark validation error (`Remarks for addpet must be 1 to 100 characters.`).
-
-   1. Test case: `addpet oi/1 pn/Milo ps/Cat pr/`<br>
-      Expected: Command fails with remark validation error (`Remarks for addpet must be 1 to 100 characters.`).
-
-   1. Test case: `addpet oi/1 pn/Milo pr/Friendly`<br>
-      Expected: Command fails due to invalid format (missing required `ps/` prefix).
-
-### Editing an owner
-
-1. Editing the fields of an existing owner
-
-   1. Prerequisites: Use sample data (contains owner `Alex Yeoh` at index 1).
-
-   1. Test case: `editowner oi/1 em/yeohalex@example.com` <br>
-      Expected: `Alex Yeoh`'s email updates to `yeohalex@example.com`.
-
-   1. Test case: `editowner oi/1 rt/friend at/enemy` <br>
-      Expected: `Alex Yeoh`'s `friend` tag is removed, and a `enemy` tag is added.
-
-   1. Test case: `editowner oi/1 at/#VIP-Prime!` <br>
-      Expected: `Alex Yeoh` receives a new tag `#VIP-Prime!`.
-
-   1. Test case: `editowner oi/1 at/AAAAAAAAAAAAAAAAAAAAA` <br>
-      Expected: Command fails with tag validation error (tag must be 1 to 20 characters).
-
-   1. Test case: `editowner oi/1 ot/` <br>
-      Expected: `Alex Yeoh`'s existing tags are removed.
-
-### Finding an owner
-
-1. Finding owners using owner fields
-
-   1. Prerequisites: Use sample data (contains owner `Alex Yeoh`).
-
-   1. Test case: `find on/alex`<br>
-      Expected: Owner list shows matching owners whose names contain `alex` (case-insensitive), including `Alex Yeoh`.
-
-   1. Test case: `find ad/ang mo kio`<br>
-      Expected: Owner list shows only owners whose address contains `ang mo kio`.
-
-   1. Test case: `find on/nonexistentowner`<br>
-      Expected: Owner list shows 0 results and status message indicates `Listed 0 owner(s).`
-
-### Finding a specific pet
-
-1. Finding owners that have a pet matching given pet fields
-
-   1. Prerequisites: Use sample data (contains pet `Buddy`, species `Dog`, under `Alex Yeoh`).
-
-   1. Test case: `find pn/buddy`<br>
-      Expected: Owner list shows owners with at least one pet whose name contains `buddy`.
-
-   1. Test case: `find pn/buddy ps/dog`<br>
-      Expected: Owner list shows owners with at least one pet matching pet name or species criteria.
-
-   1. Test case: `find on/alex pn/buddy`<br>
-      Expected: Owner list shows owners matching owner name or pet name criteria.
-
-### Adding a service
-
-1. Adding a service to the service list
-
-   1. Prerequisites: Service `Ear cleaning` does not already exist.
-
-   1. Test case: `addservice sn/Ear cleaning sp/12.50`<br>
-      Expected: Service is added to the service panel.
-
-   1. Test case: `addservice sn/@wash!* sp/9.90`<br>
-      Expected: Service is added to the service panel.
-
-   1. Test case: `addservice sn/Ear cleaning sp/15.00`<br>
-      Expected: Command fails with `Service already exists.`
-
-   1. Test case: `addservice sn/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA sp/12.50`<br>
-      Expected: Command fails with service name validation error (`Service name must be 1 to 30 characters.`).
-
-   1. Test case: `addservice sn/Ear cleaning sp/-1`<br>
-      Expected: Command fails with service price constraint error.
-
-   1. Test case: `addservice sn/Ear cleaning sp/10000.01`<br>
-      Expected: Command fails with service price constraint error.
-
-   1. Test case: `addservice sn/Ear cleaning sp/12a`<br>
-      Expected: Command fails with service price constraint error.
-
-### Deleting a service
-
-1. Deleting a service by service name
-
-   1. Prerequisites: Service `Ear cleaning` exists (add it first if needed).
-
-   1. Test case: `delete sn/Ear cleaning`<br>
-      Expected: Service is removed from the service panel.
-
-   1. Test case: `delete sn/Nonexistent Service`<br>
-      Expected: Command fails with `Service name not found.`
-
-   1. Test case: `delete`<br>
-      Expected: Command fails due to invalid format (missing required `sn/` prefix).
-
-### Deleting an owner
-
-1. Deleting an owner while all persons are being shown
-
-   1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
-
-   1. Test case: `delete o/1`<br>
-      Expected: First owner is deleted from the list.
-
-   1. Test case: `delete oi/0`<br>
-      Expected: No owner is deleted. Parse error shown with `Index must be a non-zero unsigned integer.`. Status bar remains the same.
-
-   1. Other incorrect delete commands to try: `delete`, `delete oi/x`, `delete oi/999`<br>
-      Expected: For malformed index inputs, parse error is shown. For out-of-range valid indices, command fails with `Owner index is invalid.`.
+   1. Test case: `addsession oi/1 pi/1 st/2026-06-01 13:00 et/2026-06-01 14:00 sn/No Such Service`<br>
+      Expected: unknown service is rejected.
 
 ### Saving data
 
-1. Dealing with missing/corrupted data files
+1. Positive test: Persistence across restart
 
-   1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
+    1. Prerequisites: run owner/pet/service/session flows first; do this check before deletion cleanup.
+
+    1. Close and relaunch the app, then run `find on/Manual Tester`.<br>
+       Expected: previously added records are still present.
+
+### Deletion flow (`delete` owner/pet/session/service)
+
+1. Positive tests: Delete all four supported targets
+
+   1. Prerequisites: run previous sections first.
+
+   1. Test inputs:
+      ```text
+      find on/Manual Tester
+      delete sn/Test Grooming
+      delete oi/1 pi/1 si/1
+      delete oi/1 pi/1
+      delete oi/1
+      ```
+      Expected: each delete mode succeeds (service, session, pet, owner).
+
+1. Negative test:
+
+   1. Test case: `delete oi/1 sn/Test Nail Trim`<br>
+      Expected: invalid mixed delete format is rejected.
+
+### Handling corrupted data
+
+1. Positive test: Missing/corrupted data file handling
+
+   1. Close the app and open `data/petlog.json`.
+
+   1. Introduce invalid JSON (e.g., remove one closing brace), save, and relaunch the app.<br>
+      Expected: app does not crash; data may be reset to an empty state, and warning details are written to the log file.
 
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Appendix: Effort**
 Difficulty level of our project: medium.
 
-Compared to AB3, which primarily manages a single core entity type, our project required more effort because it supports multiple related entity types, namely owners, pets, services, and sessions. This introduced additional complexity in both the codebase and the product design, as we had to maintain clear relationships between these entities while keeping commands intuitive for users.
+Compared to AB3, which primarily manages a single core entity type, our project required more effort because it supports **multiple related entity types**, namely owners, pets, services, and sessions. This introduced additional complexity in both the codebase and the product design, as we had to **maintain clear relationships** between these entities while **keeping commands intuitive** for users.
 
-The main challenges faced were in extending the original owner-centric data model to support nested pet records and session tracking, ensuring that commands remained consistent despite operating on different entity types, and keeping the UI and documentation aligned with the evolving feature set. Features such as service-linked sessions and indexed operations on pets and sessions also required more careful handling than the original AB3 workflow.
+The main challenges faced were in extending the original owner-centric data model to **support nested pet records and session tracking**, ensuring that **commands remained consistent** despite operating on **different entity types**, and keeping the UI and documentation aligned with the evolving feature set. Features such as service-linked sessions and indexed operations on pets and sessions also required more careful handling than the original AB3 workflow.
 
 The team spent about 10 hours per week over 5 weeks, for a team of 5. This gives an estimated overall effort of about 250 person-hours.
 
-Our key achievements were redesigning the model to support richer domain relationships, implementing features for managing pets, services, and care sessions, and producing a coherent user guide and developer guide that reflect the current architecture and feature set.
+Our key achievements were redesigning the model to **support richer domain relationships**, implementing features for managing pets, services, and care sessions, and producing a coherent user guide and developer guide that reflect the current architecture and feature set.
 
 --------------------------------------------------------------------------------------------------------------------
 
