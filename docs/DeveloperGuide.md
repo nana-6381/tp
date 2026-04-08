@@ -356,256 +356,283 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 (For all use cases below, the **System** is PetLog and the **Actor** is the user)
 
-**Use case: Add Owner**
+**Extensions for all use cases**
 
-**MSS**
+1. User requests PetLog to do something with provided inputs.
 
-1. User adds an owner with the relevant details
-2. PetLog adds the owner into the owner list
-3. PetLog informs user that the owner was added
-4. PetLog shows the updated list of owners
+* 1a. PetLog detects that there are missing or invalid inputs (e.g. missing required prefixes, invalid index, inputs that are too long).
+  * 1a1. PetLog informs user of the missing or invalid inputs.
+
+**Use case: UC01 - Add an owner**
+
+MSS:
+
+1. User requests to add an owner with the provided relevant details.
+2. PetLog adds the owner into the owner list.
+3. PetLog informs user that the owner was added and shows the updated list of owners with the owner added.
+
+    Use case ends.
+
+Extensions:
+
+* 1a. PetLog detects that the details match that of an existing owner.
+  * 1a1. PetLog informs the user that the owner already exists.
 
     Use case ends.
 
-**Extensions**
 
-* 1a. Missing owner details or invalid entries
-  * 1a1. PetLog shows a relevant error message
+* 1b. PetLog detects that the provided phone number contains non-numerical characters.
+  * 1b1. PetLog notes this and will give a warning to user that the phone number contains non-numerical characters in step 3.
 
-    Use case ends.
-
-* 1b. Duplicate owner
-  * 1b1. PetLog shows a relevant error message
-
-    Use case ends.
+    Use case resumes from step 2.
 	       
-**Use case: Add Pet**
+**Use case: UC02 - Add a pet**
 
-**Preconditions: The owner exists**
+Precondition: The owner to which the pet is to be added already exists.
 
-**MSS**
+MSS:
 
-1. User adds a pet to an existing owner
-2. PetLog adds pet to the specified owner
-3. PetLog informs user that the pet was added
-4. PetLog shows the updated list of owners with the pet added
-
-    Use case ends.
-
-**Extensions**
-
-* 1a. Missing owner index, invalid owner index, malformed command, or invalid pet details
-  * 1a1. PetLog shows a relevant error message
+1. User requests to add a pet with the provided relevant details to an owner.
+2. PetLog adds the pet to the specified owner.
+3. PetLog informs user that the pet was added and shows the updated list of pets with the pet added.
 
     Use case ends.
 
-* 1b. Duplicate pet
-  * 1b1. PetLog shows a relevant error message
+Extensions:
 
-    Use case ends.
-	  
-**Use case: Update Pet Remarks**
-
-**Preconditions: Owner exists and pet exists under that owner**
-
-**MSS**
-
-1. User updates the remarks of an existing pet
-2. PetLog updates the remarks
-3. PetLog informs user that the remark has been updated
-4. PetLog displays the updated list with the new remark
-
-    Use case ends.
-
-**Extensions**
-
-* 1a. Missing or invalid indices, unrecognized prefixes, malformed command, repeated prefix
-  * 1a1. PetLog shows a relevant error message
-
-    Use case ends.
-
-**Use case: Delete Owner**
-
-**MSS**
-
-1. User requests to delete the owner
-2. PetLog deletes the owner
-3. PetLog informs user about the successful deletion
-4. PetLog displays new list without the deleted owner
-
-    Use case ends.
-
-**Extensions**
-
-* 1a. Missing, invalid, out-of-range index, malformed command, unrecognized prefixes
-  * 1a1. PetLog shows a relevant error message
-
-    Use case ends.
-
-**Use case: Delete Pet**
-
-**Preconditions: Owner exists and pet exists under that owner**
-
-**MSS**
-
-1. User requests to delete the pet
-2. PetLog deletes the pet
-3. PetLog informs user about the successful deletion
-4. PetLog displays new list without the deleted pet
-
-    Use case ends.
-
-**Extensions**
-
-* 1a. Missing, invalid, out-of-range index, malformed command, unrecognized prefixes
-  * 1a1. PetLog shows a relevant error message
-
-    Use case ends.
-
-**Use case: Find Owner**
-
-**MSS**
-
-1. User searches for owners by keywords
-2. PetLog finds matching owners
-3. PetLog displays a list of matching owners
-4. PetLog informs user of the number of matching owners
-
-    Use case ends.
-
-**Extensions**
-
-* 1a. No prefixes, unrecognized prefixes, malformed command
-    * 1a1. PetLog shows a relevant error message
+* 1a. PetLog detects the details match that of an existing pet of the same owner.
+    * 1a1. PetLog informs the user that the pet already exists for that owner.
 
       Use case ends.
-
 	  
-* 1b. Invalid field contents entered in search
-  * 1b1. PetLog displays that there are 0 matches
+**Use case: UC03 - Update a pet's remarks**
+
+Precondition: The pet which details are to be updated already exists.
+
+MSS:
+
+1. User requests to overwrite the remarks of a pet with the provided updated remarks.
+2. PetLog updates the remarks of the pet.
+3. PetLog informs user that the remarks have been updated and displays the updated pet with the new remarks.
 
     Use case ends.
 
-**Use case: List**
+**Use case: UC04 - Delete an owner**
 
-**MSS**
+Precondition: The owner to be deleted already exists.
 
-1. User requests to list all records of owners and pets
-2. PetLog displays the list of owners and pets
-3. PetLog confirms it is showing all records
+MSS:
 
-    Use case ends.
-
-**Extensions**
-
-* 1a. Misspelled command, unnecessary prefix inputs
-  * 1a1. PetLog displays a relevant error message
+1. User requests to delete an owner.
+2. PetLog deletes the owner.
+3. PetLog informs user that the deletion was successful and displays the new list of owners without the deleted owner.
 
     Use case ends.
 
-**Use case: Add Service**
+**Use case: UC05 - Delete a pet**
 
-**MSS**
+Precondition: The pet to be deleted already exists.
 
-1. User adds a service with the service name and price
-2. PetLog adds the service into the service list
-3. PetLog informs user that the service was added
-4. PetLog displays the updated service list
+MSS:
 
-    Use case ends.
-
-**Extensions**
-
-* 1a. Missing service details or invalid entries
-  * 1a1. PetLog shows a relevant error message
+1. User requests to delete a pet.
+2. PetLog deletes the pet.
+3. PetLog informs user that the deletion was successful and displays the new list of pets without the deleted pet.
 
     Use case ends.
 
-* 1b. Duplicate service
-  * 1b1. PetLog shows a relevant error message
+**Use case: UC06 - Search for owners**
+
+Precondition: Some owners already exist.
+
+MSS:
+
+1. User requests to search for owners by fields and keywords.
+2. PetLog finds matching owners.
+3. PetLog informs user of the number of matching owners and displays them.
 
     Use case ends.
 
-**Use case: Add Session**
-
-**Preconditions: Owner exists and pet exists under that owner**
-
-**MSS**
-
-1. User adds a session to a specified pet under a specified owner
-2. PetLog validates the owner, pet, time range, and optional services
-3. PetLog adds the session to the specified pet
-4. PetLog computes the total fee for the session
-5. PetLog informs user that the session was added
-6. PetLog displays the updated session list
+Extensions:
+	  
+* 2a. PetLog does not find any owners with matching fields.
+  * 2b1. PetLog informs the user that there are 0 matching owners.
 
     Use case ends.
 
-**Extensions**
+**Use case: UC07 - List all records**
 
-* 1a. Missing indices, invalid indices, malformed command, or invalid date-time format
-  * 1a1. PetLog shows a relevant error message
+MSS:
 
-    Use case ends.
-
-* 2a. One or more specified services do not exist
-  * 2a1. PetLog shows a relevant error message
+1. User requests to list all records (owners, pets, services, sessions).
+2. PetLog displays all records and informs the user it is showing all records.
 
     Use case ends.
 
-* 2b. End time is not after start time
-  * 2b1. PetLog shows a relevant error message
+**Use case: UC08 - Add a service**
+
+MSS:
+
+1. User requests to add a service with the provided name and price.
+2. PetLog adds the service into the service list.
+3. PetLog informs user that the service was added and displays the updated service catalogue.
 
     Use case ends.
 
-* 2c. Session overlaps with an existing session for the selected pet
-  * 2c1. PetLog shows a relevant error message
+Extensions:
+
+* 1b. PetLog detects that the provided name matches that of an existing service.
+  * 1b1. PetLog informs the user that the service already exists.
 
     Use case ends.
 
-**Use case: Delete Session**
+**Use case: UC09 - Add a session with no services**
 
-**Preconditions: Owner exists, pet exists under that owner, and the pet has at least one session**
+Precondition: The pet which the session is to be added for already exists.
 
-**MSS**
+MSS:
 
-1. User requests to delete a session from a specified pet under a specified owner
-2. PetLog deletes the specified session
-3. PetLog informs user about the successful deletion
-4. PetLog displays the updated session list
-
-    Use case ends.
-
-**Extensions**
-
-* 1a. Missing indices, invalid indices, out-of-range indices, or malformed command
-  * 1a1. PetLog shows a relevant error message
+1. User requests to add a session to a specified pet, with the provided start and end times.
+2. PetLog adds the session to the specified pet.
+3. PetLog computes the total fee for the session.
+4. PetLog informs user that the session was added and displays the updated list of sessions with the session added.
 
     Use case ends.
 
-**Use case: Delete Service**
+Extensions:
 
-**Preconditions: Service exists**
-
-**MSS**
-
-1. User requests to delete a service by service name
-2. PetLog finds the matching service
-3. PetLog deletes the service
-4. PetLog informs user about the successful deletion
-5. PetLog displays the updated service list
+* 1a. PetLog detects that the end time is not chronologically after the start time.
+  * 1a1. PetLog informs user that end time of a session must be after its start time.
 
     Use case ends.
 
-**Extensions**
 
-* 1a. Missing service name, malformed command, or unrecognized prefixes
-  * 1a1. PetLog shows a relevant error message
+* 1b. PetLog detects that the session being added overlaps with an existing session for the specified pet.
+  * 1b1. PetLog informs user that the specified pet has an existing overlapping session.
 
     Use case ends.
 
-* 2a. Service name does not match any existing service
-  * 2a1. PetLog shows a relevant error message
+**Use case: UC10 - Add a session with services**
+
+Precondition: The pet which the session is to be added for already exists, and the services to be added to the session already exist.
+
+MSS:
+
+Same as UC09, but also with the specified services in step 1.
+
+
+Extensions:
+
+Same as UC09.
+
+**Use case: UC11 - Delete a session**
+
+Precondition: The session to be deleted exists.
+
+MSS:
+
+1. User requests to delete a specified session.
+2. PetLog deletes the specified session.
+3. PetLog informs user that the deletion was successful and displays the new list of sessions without the deleted session.
+
+    Use case ends.
+
+**Use case: UC12 - Delete a service**
+
+Precondition: The service to be deleted exists.
+
+MSS:
+
+1. User requests to delete a specified service.
+2. PetLog deletes the specified service.
+3. PetLog informs user that the deletion was successful and displays the new list of services without the deleted service.
+
+    Use case ends.
+
+**Use case: UC12 - Editing an owner's details**
+
+Precondition: The owner whose details are to be edited already exists.
+
+MSS:
+
+1. User requests to edit the provided fields of the specified owner.
+2. PetLog overwrites the fields of the owner with the provided inputs.
+3. PetLog informs user that the edit was successful and displays the updated list of owners with the updated owner.
+
+   Use case ends.
+
+**Use case: UC13 - Clear all records**
+
+MSS:
+
+1. User requests to clear all records (owners, pets, services, sessions).
+2. PetLog deletes all records.
+3. PetLog informs user that the deletion was successful and displays the updated blank lists.
+
+   Use case ends.
+
+**Use case: UC14 - Get help with commands**
+
+MSS:
+
+1. User requests for help with commands.
+2. PetLog displays a list of all available commands and their formats, and provides user with a link to the user guide.
+3. PetLog informs user that the help was provided successfully.
+
+   Use case ends.
+
+**Use case: UC15 - Searching for an owner to add a pet to / delete / edit / etc**
+
+Precondition: The owner to be searched for already exists.
+
+MSS:
+
+1. User <u>searches for the specified owner (UC06)</u>.
+2. User <u>adds a pet to the owner (UC02)</u> / <u>deletes the owner (UC04)</u> / <u>edits the owner (UC12)</u> / etc with the updated index of the owner displayed from step 1.
+    
+    Use case ends.
+
+**Use case: UC16 - Adjust the price of a service**
+
+Precondition: The service which price is to be adjusted already exists.
+
+MSS:
+
+1. User <u>deletes the service (UC11)</u>.
+2. User <u>adds a session (UC10)</u> with the same name and adjusted price.
+
+    Use case ends.
+
+**Use case: UC17 - Change the timing or services of a session**
+
+Precondition: The session to be changed already exists.
+
+MSS:
+
+1. User <u>deletes the session (UC10)</u>.
+2. User <u>adds a session (UC09)</u> with the changed timings or services.
+
+    Use case ends.
+
+**Use case: UC18 - Adjust the price of a service and recompute the fee of a sessions using that service**
+
+Preconditions: The session and service already exist, the session uses the service.
+
+MSS:
+
+1. User <u>adjusts the price of the service (UC16)</u>.
+2. User <u>deletes the session (UC10)</u>.
+3. User <u>adds a session (UC09)</u> with the same name, time and services.
+
+    Use case ends.
+
+**Use case: UC19 - Close PetLog**
+
+MSS:
+
+1. User requests to close the application.
+2. PetLog informs the user that the application will be closed.
+3. PetLog closes the application.
 
     Use case ends.
 
