@@ -24,7 +24,7 @@
       </stylesheets>
 
       <VBox id="helpWindowContainer">
-        <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
+        <ScrollPane id="commandScrollPane" fitToWidth="true" VBox.vgrow="ALWAYS">
           <Label fx:id="commandsLabel" wrapText="true">
             <padding>
               <Insets top="15" right="15" bottom="15" left="15" />
