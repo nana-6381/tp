@@ -10,6 +10,8 @@ import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import java.util.ArrayList;
+
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.pet.Pet;
 import seedu.address.model.tag.Tag;
@@ -176,6 +178,40 @@ public class FieldContainsKeywordsPredicate implements Predicate<Person> {
         return Arrays.stream(normalizedKeyword.split(" "))
                 .filter(term -> !term.isBlank())
                 .collect(Collectors.toUnmodifiableList());
+    }
+
+    /**
+     * Returns a human-readable description of which fields of {@code person} matched the search terms.
+     */
+    public String describeMatch(Person person) {
+        List<String> matched = new ArrayList<>();
+        if (matchesField(person.getName().fullName, ownerNameTerms)) {
+            matched.add("name");
+        }
+        if (matchesField(person.getPhone().value, phoneTerms)) {
+            matched.add("phone");
+        }
+        if (matchesField(person.getEmail().value, emailTerms)) {
+            matched.add("email");
+        }
+        if (matchesField(person.getAddress().value, addressTerms)) {
+            matched.add("address");
+        }
+        if (matchesTags(person.getTags())) {
+            matched.add("tag");
+        }
+        for (Pet pet : person.getPets()) {
+            if (matchesField(pet.getName().value, petNameTerms)) {
+                matched.add("pet \"" + pet.getName().value + "\" (name)");
+            }
+            if (matchesField(pet.getSpecies().value, speciesTerms)) {
+                matched.add("pet \"" + pet.getName().value + "\" (species)");
+            }
+            if (matchesField(pet.getRemark().value, petRemarkTerms)) {
+                matched.add("pet \"" + pet.getName().value + "\" (remark)");
+            }
+        }
+        return String.join("\n ", matched);
     }
 
     @Override
