@@ -115,6 +115,26 @@ How the parsing works:
 * When called upon to parse a user command, `AddressBookParser` creates an `XYZCommandParser` (`XYZ` is a placeholder for the specific command name, e.g., `AddOwnerCommandParser`). That parser uses the supporting classes shown above to parse input and create an `XYZCommand` object (e.g., `AddOwnerCommand`), which `AddressBookParser` returns as a `Command`.
 * All `XYZCommandParser` classes (e.g., `AddOwnerCommandParser`, `DeleteCommandParser`, ...) inherit from the `Parser` interface so that they can be treated similarly where possible, e.g., during testing.
 
+
+### Add Service Command Sequence
+
+The sequence diagram below illustrates the interactions within the `Logic` component for `execute("addservice sn/Fur trim sp/25.00")`.
+
+<img src="images/AddServiceSequenceDiagram.png" width="1000"/>
+
+<div markdown="span" class="alert alert-info">:information_source: **Note:** The `AddServiceCommandParser` lifeline continues till the end of the diagram due to a PlantUML limitation.
+</div>
+
+How the `addservice` command works:
+
+1. The user enters an `addservice` command into the `CommandBox`.
+2. The `LogicManager` receives the command text and passes it to the `AddressBookParser`.
+3. The `AddressBookParser` identifies the command as an `AddServiceCommand` and delegates parsing to `AddServiceCommandParser`.
+4. The `AddServiceCommandParser` parses the input arguments and constructs an `AddServiceCommand` object.
+5. The `AddServiceCommand` is executed by the `LogicManager`, which interacts with the `Model` to check if the service already exists.
+6. If the service does not exist, it is added to the model; otherwise, a `CommandException` is thrown.
+7. The result of the command execution is returned as a `CommandResult`, which is displayed to the user.
+
 ### Model component
 
 **API** : [`Model.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/model/Model.java)
