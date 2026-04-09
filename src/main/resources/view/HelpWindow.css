@@ -1,23 +1,23 @@
 #copyButton, #helpMessage, #commandsLabel {
-    -fx-text-fill: white;
+    -fx-text-fill: #3c2f2f;
 }
 
 #copyButton {
-    -fx-background-color: dimgray;
+    -fx-background-color: #fcd0a8;
 }
 
 #copyButton:hover {
-    -fx-background-color: gray;
+    -fx-background-color: #c4a07a;
 }
 
 #copyButton:armed {
-    -fx-background-color: darkgray;
+    -fx-background-color: #a0785a;
 }
 
 #helpMessageContainer {
-    -fx-background-color: derive(#1d1d1d, 20%);
+    -fx-background-color: #ffdab9;
 }
 
 #commandScrollPane, #commandScrollPane > .viewport {
-    -fx-background-color: derive(#1d1d1d, 20%);
+    -fx-background-color: #ffdab9;
 }
