@@ -193,16 +193,6 @@ public class AddOwnerCommandTest {
         }
 
         @Override
-        public ObservableList<Pet> getFilteredPetList() {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public void updateFilteredPetList(Predicate<Pet> predicate) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
         public void updateFilteredPersonList(Predicate<Person> predicate) {
             throw new AssertionError("This method should not be called.");
         }
