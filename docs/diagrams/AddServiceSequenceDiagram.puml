@@ -1,0 +1,47 @@
+@startuml
+!include style.puml
+
+skinparam Participant{
+    FontColor #000000
+}
+
+actor User USER_COLOR
+
+box "UI" UI_COLOR
+participant "CommandBox" as CB
+end box
+
+box "Logic" LOGIC_COLOR
+participant "LogicManager" as LM
+participant "AddressBookParser" as ABP
+participant "AddServiceCommandParser" as ASCP
+participant "AddServiceCommand" as ASC
+end box
+
+box "Model" MODEL_COLOR
+participant "Model" as M
+end box
+
+User -> CB : addservice n/Fur trim p/25.00
+CB -> LM : execute(commandText)
+
+LM -> ABP : parseCommand(commandText)
+ABP -> ASCP : parse(args)
+
+ASCP --> ABP : AddServiceCommand
+ABP --> LM : AddServiceCommand
+
+LM -> ASC : execute(model)
+
+ASC -> M : hasService(service)
+alt service already exists
+    ASC --> LM : CommandException
+else service does not exist
+    ASC -> M : addService(service)
+    ASC --> LM : CommandResult
+end
+
+LM --> CB : CommandResult
+CB --> User : display result
+
+@enduml
