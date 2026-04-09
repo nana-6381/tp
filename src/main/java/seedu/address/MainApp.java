@@ -7,6 +7,7 @@ import java.util.function.Supplier;
 import java.util.logging.Logger;
 
 import javafx.application.Application;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import seedu.address.commons.core.Config;
 import seedu.address.commons.core.LogsCenter;
@@ -51,6 +52,9 @@ public class MainApp extends Application {
     public void init() throws Exception {
         logger.info("=============================[ Initializing AddressBook ]===========================");
         super.init();
+        Font.loadFont(MainApp.class.getResourceAsStream("/fonts/Pacifico-Regular.ttf"), 12);
+        Font.loadFont(MainApp.class.getResourceAsStream("/fonts/FredokaOne-Regular.ttf"), 12);
+        Font.loadFont(MainApp.class.getResourceAsStream("/fonts/Comfortaa-Regular.ttf"), 12);
 
         AppParameters appParameters = AppParameters.parse(getParameters());
         config = initConfig(appParameters.getConfigPath());
