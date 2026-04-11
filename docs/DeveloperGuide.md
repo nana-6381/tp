@@ -906,6 +906,6 @@ Examples:
 
 The planned enhancement is to improve the parsers to be able to detect invalid prefixes of the form ` xx/`, where x is any (case-insensitive) alphabetical character, via regex, so that an error describing the invalid prefix can be shown to the user.
 
-However, this may birth new issues in edge cases, e.g. when an owner's address is `123 St/Ave`. This can further be remedied by using a backslash (`\`) to "escape" regex detection, e.g. `ad/123 \St/Ave` will be interpreted as: the argument to `ad/` is `123 St/Ave` and no error is raised.
+However, this may give rise to new issues in edge cases, e.g. when an owner's address is `123 St/Ave`. This can further be remedied by using a backslash (`\`) to "escape" regex detection, e.g. `ad/123 \St/Ave` will be interpreted as: the argument to `ad/` is `123 St/Ave` and no error is raised.
 
 The User Guide will also be updated to capture all the details above.
