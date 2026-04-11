@@ -765,10 +765,10 @@ It aims to complement the UG by suggesting a simple path for testing and providi
 1. Positive tests: Add, search, and edit one owner
 
    1. Test inputs (copy-paste one by one): <br>
-      `addowner on/Manual Tester ph/81234567 em/manual.tester@example.com ad/123 Test Avenue, #01-02 ot/VIP` <br>
-      `find on/Manual Tester` <br>
-      `editowner oi/1 ph/87654321 at/premium rt/VIP` <br>
-      `find on/Manual Tester` <br>
+      * `addowner on/Manual Tester ph/81234567 em/manual.tester@example.com ad/123 Test Avenue, #01-02 ot/VIP` <br>
+      * `find on/Manual Tester` <br>
+      * `editowner oi/1 ph/87654321 at/premium rt/VIP` <br>
+      * `find on/Manual Tester` <br>
       Expected: owner is added, filtered, edited, and still searchable.
 
 1. Negative test
@@ -783,9 +783,9 @@ It aims to complement the UG by suggesting a simple path for testing and providi
    1. Prerequisites: `find on/Manual Tester` shows this owner at `oi/1`.
 
    1. Test inputs:
-      `addpet oi/1 pn/Pixel ps/Cat pr/Needs quiet handling` <br>
-      `update oi/1 pi/1 pr/Needs quiet handling and short breaks` <br>
-      `find pn/Pixel` <br>
+      * `addpet oi/1 pn/Pixel ps/Cat pr/Needs quiet handling` <br>
+      * `update oi/1 pi/1 pr/Needs quiet handling and short breaks` <br>
+      * `find pn/Pixel` <br>
       Expected: pet is added under the owner, remark updates, and owner is returned by pet search.
 
 1. Negative tests
@@ -803,9 +803,9 @@ It aims to complement the UG by suggesting a simple path for testing and providi
    1. Prerequisites: `find on/Manual Tester` shows this owner at `oi/1` with `Pixel` at `pi/1`.
 
    1. Test inputs:
-      `addservice sn/Test Grooming sp/25.00` <br>
-      `addservice sn/Test Nail Trim sp/12.50` <br>
-      `addsession oi/1 pi/1 st/2026-06-01 10:00 et/2026-06-01 11:30 sn/Test Grooming sn/Test Nail Trim` <br>
+      * `addservice sn/Test Grooming sp/25.00` <br>
+      * `addservice sn/Test Nail Trim sp/12.50` <br>
+      * `addsession oi/1 pi/1 st/2026-06-01 10:00 et/2026-06-01 11:30 sn/Test Grooming sn/Test Nail Trim` <br>
       Expected: services appear in service panel; session appears in session panel with computed fee.
 
 1. Negative tests
@@ -835,11 +835,11 @@ It aims to complement the UG by suggesting a simple path for testing and providi
    1. Prerequisites: run previous sections first.
 
    1. Test inputs:
-      `find on/Manual Tester` <br>
-      `delete sn/Test Grooming` <br>
-      `delete oi/1 pi/1 si/1` <br>
-      `delete oi/1 pi/1` <br>
-      `delete oi/1` <br>
+      * `find on/Manual Tester` <br>
+      * `delete sn/Test Grooming` <br>
+      * `delete oi/1 pi/1 si/1` <br>
+      * `delete oi/1 pi/1` <br>
+      * `delete oi/1` <br>
       Expected: each delete mode succeeds (service, session, pet, owner).
 
 1. Negative test:
