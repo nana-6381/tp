@@ -28,10 +28,12 @@ import seedu.address.model.ModelManager;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.person.Person;
+import seedu.address.model.session.Session;
 import seedu.address.storage.JsonAddressBookStorage;
 import seedu.address.storage.JsonUserPrefsStorage;
 import seedu.address.storage.StorageManager;
 import seedu.address.testutil.PersonBuilder;
+import seedu.address.testutil.TypicalAddressBooks;
 
 public class LogicManagerTest {
     private static final IOException DUMMY_IO_EXCEPTION = new IOException("dummy IO exception");
@@ -68,6 +70,37 @@ public class LogicManagerTest {
     public void execute_validCommand_success() throws Exception {
         String listCommand = ListCommand.COMMAND_WORD;
         assertCommandSuccess(listCommand, ListCommand.MESSAGE_SUCCESS, model);
+    }
+
+    @Test
+    public void execute_commandsThatChangeIndices_sessionProjectionIsRefreshed() throws Exception {
+        model = new ModelManager(TypicalAddressBooks.getTypicalPetLog(), new UserPrefs());
+
+        Person secondOwner = model.getFilteredPersonList().get(1);
+        secondOwner.getPetList().get(0).addSession(new Session("2026-04-01 10:00", "2026-04-01 11:00", 20.0));
+        model.updateDisplayedSessions(model.getFilteredPersonList());
+
+        JsonAddressBookStorage addressBookStorage =
+                new JsonAddressBookStorage(temporaryFolder.resolve("petlogWithSessions.json"));
+        JsonUserPrefsStorage userPrefsStorage =
+                new JsonUserPrefsStorage(temporaryFolder.resolve("userPrefsWithSessions.json"));
+        StorageManager storage = new StorageManager(addressBookStorage, userPrefsStorage);
+        logic = new LogicManager(model, storage);
+
+        assertEquals(1, logic.getSessionList().size());
+        assertEquals(2, logic.getSessionList().get(0).ownerIndex());
+
+        logic.execute("find on/Bernice");
+        assertEquals(1, logic.getSessionList().size());
+        assertEquals(1, logic.getSessionList().get(0).ownerIndex());
+
+        logic.execute("addowner on/New Owner ph/91234567 em/newowner@example.com ad/New Street 1");
+        assertEquals(1, logic.getSessionList().size());
+        assertEquals(2, logic.getSessionList().get(0).ownerIndex());
+
+        logic.execute("delete oi/1");
+        assertEquals(1, logic.getSessionList().size());
+        assertEquals(1, logic.getSessionList().get(0).ownerIndex());
     }
 
     @Test
