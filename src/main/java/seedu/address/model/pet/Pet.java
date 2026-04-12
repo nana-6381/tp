@@ -5,6 +5,7 @@ import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 import static seedu.address.commons.util.StringUtil.normalizeForComparison;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -62,6 +63,9 @@ public class Pet {
     public void addSession(Session session) {
         requireNonNull(session);
         sessions.add(session);
+        sessions.sort(Comparator
+                .comparing(Session::getStartDateTime)
+                .thenComparing(Session::getEndDateTime));
     }
 
     /**

@@ -35,6 +35,8 @@ public class AddSessionCommandTest {
     private static final String VALID_END = "2026-03-25 11:00";
     private static final String VALID_START_2 = "2026-03-26 14:00";
     private static final String VALID_END_2 = "2026-03-26 15:00";
+    private static final String EARLIER_START = "2026-03-24 09:00";
+    private static final String EARLIER_END = "2026-03-24 10:00";
     private static final String OVERLAPPING_START = "2026-03-25 10:30";
     private static final String OVERLAPPING_END = "2026-03-25 11:30";
     private static final String ADJACENT_START = "2026-03-25 11:00";
@@ -99,6 +101,26 @@ public class AddSessionCommandTest {
 
         assertEquals(2, pet.getSessions().size());
         assertEquals(new Session(VALID_START, VALID_END), pet.getSessions().get(0));
+        assertEquals(new Session(VALID_START_2, VALID_END_2), pet.getSessions().get(1));
+    }
+
+    @Test
+    public void execute_earlierSessionAddedLater_keptChronological() throws Exception {
+        AddSessionCommand laterSession = new AddSessionCommand(
+                INDEX_FIRST_PERSON, INDEX_FIRST_PERSON, VALID_START_2, VALID_END_2);
+        AddSessionCommand earlierSession = new AddSessionCommand(
+                INDEX_FIRST_PERSON, INDEX_FIRST_PERSON, EARLIER_START, EARLIER_END);
+
+        laterSession.execute(model);
+        earlierSession.execute(model);
+
+        Pet pet = model.getFilteredPersonList()
+                .get(INDEX_FIRST_PERSON.getZeroBased())
+                .getPetList()
+                .get(INDEX_FIRST_PERSON.getZeroBased());
+
+        assertEquals(2, pet.getSessions().size());
+        assertEquals(new Session(EARLIER_START, EARLIER_END), pet.getSessions().get(0));
         assertEquals(new Session(VALID_START_2, VALID_END_2), pet.getSessions().get(1));
     }
 
