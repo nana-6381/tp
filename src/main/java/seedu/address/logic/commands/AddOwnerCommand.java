@@ -7,6 +7,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_OWNER_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -79,7 +80,7 @@ public class AddOwnerCommand extends Command {
             appendWarning(feedback, String.format(MESSAGE_PARTIAL_DUPLICATE_WARNING,
                     formatMatchedFields(matchedFields)));
         }
-        return new CommandResult(String.format(feedback.toString()));
+        return new CommandResult(feedback.toString());
     }
 
     private Set<String> collectPartialMatchFields(Model model) {
@@ -101,17 +102,30 @@ public class AddOwnerCommand extends Command {
     }
 
     private String formatMatchedFields(Set<String> matchedFields) {
-        List<String> fields = List.copyOf(matchedFields);
+        List<String> ordered = new ArrayList<>();
 
-        if (fields.size() == 1) {
-            return fields.get(0);
+        if (matchedFields.contains("name")) {
+            ordered.add("name");
         }
-        if (fields.size() == 2) {
-            return fields.get(0) + " and " + fields.get(1);
+        if (matchedFields.contains("phone")) {
+            ordered.add("phone");
+        }
+        if (matchedFields.contains("email")) {
+            ordered.add("email");
+        }
+        if (matchedFields.contains("address")) {
+            ordered.add("address");
         }
 
-        String allButLast = String.join(", ", fields.subList(0, fields.size() - 1));
-        return allButLast + ", and " + fields.get(fields.size() - 1);
+        if (ordered.size() == 1) {
+            return ordered.get(0);
+        }
+        if (ordered.size() == 2) {
+            return ordered.get(0) + " and " + ordered.get(1);
+        }
+
+        String allButLast = String.join(", ", ordered.subList(0, ordered.size() - 1));
+        return allButLast + ", and " + ordered.get(ordered.size() - 1);
     }
 
     @Override

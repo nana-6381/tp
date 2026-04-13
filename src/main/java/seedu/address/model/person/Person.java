@@ -141,7 +141,9 @@ public class Person {
 
         return otherPerson != null
                 && normalizeName(otherPerson.getName()).equals(normalizeName(getName()))
-                && normalizePhone(otherPerson.getPhone()).equals(normalizePhone(getPhone()));
+                && normalizePhone(otherPerson.getPhone()).equals(normalizePhone(getPhone()))
+                && normalizeEmail(otherPerson.getEmail()).equals(normalizeEmail(getEmail()))
+                && normalizeAddress(otherPerson.getAddress()).equals(normalizeAddress(getAddress()));
     }
 
     /**
@@ -174,7 +176,7 @@ public class Person {
     }
 
     private String normalizePhone(Phone phone) {
-        return normalizeWhitespace(phone.value);
+        return phone.value.replaceAll("[^0-9]", "");
     }
 
     private String normalizeEmail(Email email) {
